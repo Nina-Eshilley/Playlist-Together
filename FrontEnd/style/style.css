@@ -1,0 +1,166 @@
+/* Reset básico - remove margens e padding padrão dos navegadores */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Faz com que padding e border não aumentem o tamanho total */
+}
+
+/* Estilos do corpo da página */
+body {
+    font-family: 'Arial', sans-serif;
+    /* Gradiente bonitinho de fundo */
+    background-color: #251400;
+    background-image: linear-gradient(90deg, #251400 64.5%, rgba(185, 99, 0, 0.411)0%);
+    background-repeat: no-repeat;
+    height: 100vh; /* 100% da altura da tela */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;
+    font-family: "Italiana", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+img{
+    display: flex;
+    position: absolute;
+    opacity: 0.6;
+    right: 0;
+}
+
+.container-principal {
+    left: 26%;
+    top: 25%;
+    display: flex;
+    position: absolute;
+    text-align: center;
+}
+
+
+/* Container do login */
+.login-container {
+    position: relative;
+}
+
+.btn{
+    color:#ffcd7c;
+}
+
+#form label{
+    color: #ffcd7c;
+    margin-top: 15px;
+}
+
+a{
+    color: #ffcd7c;
+}
+
+p{
+    color: #ffcd7c;
+}
+
+/*Título principal*/
+h1{
+    color: #ffcd7c;
+    margin-bottom: 30px;
+}
+
+/* Título */
+h2 {
+    color: #ffcd7c;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+/* Grupo de inputs (label + input) */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left; /* Alinha o texto à esquerda */
+}
+
+label {
+    display: block; /* Faz o label ocupar toda a linha */
+    margin-bottom: 5px;
+    color: #ffcd7c;
+    font-weight: bold;
+}
+
+/* Inputs maiores e mais finos */
+input {
+    width: 90%; /* diminui um pouco pra centralizar melhor */
+    padding: 10px 14px; /* altura confortável */
+    border: 1.5px solid #ddd; /* borda mais fina */
+    border-radius: 6px;
+    font-size: 16px;
+    display: block; /* garante que ocupe a linha toda */
+    margin: 0 auto; /* centraliza horizontalmente */
+    transition: border-color 0.3s; /* Transição suave para a borda */
+}
+
+
+/* Quando o input está focado (clicado) */
+input:focus {
+    outline: none; /* Remove contorno padrão */
+    border-color: #667eea; /* Muda a cor da borda */
+}
+
+/* Botões */
+.login-btn, .signup-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s; /* Animação suave */
+}
+
+/* Efeito ao passar o mouse nos botões */
+.login-btn:hover, .signup-btn:hover {
+    transform: translateY(-2px); /* Levanta o botão 2px */
+}
+
+.signup-link {
+    margin-top: 20px;
+    color: #666;
+}
+
+.signup-link a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+/* ========== ESTILOS DO MODAL ========== */
+
+/* Fundo escuro do modal */
+.modal {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    z-index: 1; /* Fica acima de outros elementos */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* Fundo semi-transparente */
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background-color: white;
+    margin: 10% auto; /* Centraliza verticalmente */
+    padding: 30px;
+    border-radius: 15px;
+    width: 400px;
+    position: relative;
+}
+
+/* Botão de fechar (X) */
+.fechar {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 28px;
+    cursor: pointer;
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style/style.css">
+    <title>Login</title>
+</head>
+<body>
+    <!--Aqui eu tô criando um container para englobar tudo-->
+    <div class="container-principal">
+
+        <!-- ======= TELA DE LOGIN ======= -->
+        <div id="tela-login" class="caixa-login">
+            <h1 class="título">ListenTogether</h1> <!-- Aqui vai aparecer só o título-->
+            <h2>Fazer Login</h2>
+            <!--Início do formulário-->
+            <form id="form">
+                <div class="infos-login">
+                    <label for="email">Email:</label> <!--Criei a caixinha de email-->
+                    <input type="email" id="email" required> 
+                    <!--Os "required", são uma validação obrigatória, tipo se você não prencheer tal campo
+                    não tem como enviar, serve tanto para login, quanto para cadastro-->
+                </div>
+
+                <div class="senha"> 
+                    <label for="password">Senha:</label> <!--Criei a caixinha de senha-->
+                    <input type="password" id="password" required>
+                    <!--O password é para deixar a senha assim: ****** (mais para segurança)-->
+                </div>
+
+                <!--Um botãozinho para a gente entrar na página inicial-->
+                <button type="submit" class="btn">Entrar</button>
+            </form>
+
+            <!-- Aqui é a parte para quem não tem conta -->
+            <p class="link">Não tem conta?</p>
+            <a href="#" id="mostrarCadastro">Cadastra-se</a>
+        </div>
+
+        <!-- ======= TELA DE CADASTRO ======= -->
+        <div id="tela-cadastro" class="caixa-login" style="display:none;">
+            <h1 class="título">ListenTogether</h1>
+            <h2>Criar conta</h2>
+
+            <!--Basicamente aqui são as informações que as pessoas 
+            tem que preencher para cria a conta-->
+            <form id="signupFormulario">
+                <div class="infos-cadastro">
+                    <label for="signupName">Nome</label>
+                    <input type="text" id="signupName" required> <!--o "type text" é para texto normal 
+                    e não tem validação-->
+                </div>
+
+                <div class="infos-cadastro">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required> <!--o "type email" verifica se o texto digitado possui @
+                    Senão possuir dá erro-->
+                </div>
+
+                <div class="infos-cadastro">
+                    <label for="signupPassword">Senha</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+
+                <!--Botão para criar a conta-->
+                <button type="submit" class="btn">Cadastrar</button>
+            </form>
+
+            <p class="link">Já tem conta?</p>
+            <a href="#" id="voltarLogin">Voltar ao login</a>
+        </div>
+
+    </div>
+
+    <img src="./img/Fundo.jpg" alt="">
+
+    <!--Importando o JS-->
+    <script src="./js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
