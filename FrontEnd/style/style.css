@@ -28,6 +28,13 @@ img{
     right: 0;
 }
 
+.título{
+    top: 5%;
+    position: absolute;
+    font-size: 45px;
+    left: 24%;
+}
+
 .container-principal {
     left: 26%;
     top: 25%;
