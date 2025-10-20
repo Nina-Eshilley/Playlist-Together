@@ -7,21 +7,19 @@
 
 /* Estilos do corpo da página */
 body {
-    font-family: 'Arial', sans-serif;
-    /* Gradiente bonitinho de fundo */
+    font-family: "Italiana", sans-serif;
+    font-weight: 400;
+    font-style: normal;
     background-color: #251400;
-    background-image: linear-gradient(90deg, #251400 64.5%, rgba(185, 99, 0, 0.411)0%);
+    background-image: linear-gradient(90deg, #251400 64.5%, rgba(185, 99, 0, 0.411) 0%);
     background-repeat: no-repeat;
     height: 100vh; /* 100% da altura da tela */
     display: flex;
     justify-content: center; /* Centraliza horizontalmente */
-    align-items: center;
-    font-family: "Italiana", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+    align-items: center;     /* Centraliza verticalmente */
 }
 
-img{
+img {
     display: flex;
     position: absolute;
     opacity: 0.6;
@@ -36,36 +34,46 @@ img{
     text-align: center;
 }
 
-
 /* Container do login */
 .login-container {
     position: relative;
 }
 
-.btn{
-    color:#ffcd7c;
+/* Botões simples */
+.btn {
+    background: none;      /* Sem fundo */
+    border: none;          /* Sem borda */
+    color: #ffcd7c;        /* Cor do texto */
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px 0;       /* Espaçamento confortável */
+    transition: color 0.3s;
 }
 
-#form label{
+.btn:hover {
+    color: #ffd57c;        /* Muda a cor ao passar o mouse */
+}
+
+#form label, #signupFormulario label {
     color: #ffcd7c;
     margin-top: 15px;
 }
 
-a{
+a {
     color: #ffcd7c;
 }
 
-p{
+p {
     color: #ffcd7c;
 }
 
 /*Título principal*/
-h1{
+h1 {
     color: #ffcd7c;
     margin-bottom: 30px;
 }
 
-/* Título */
+/* Título secundário */
 h2 {
     color: #ffcd7c;
     margin-bottom: 30px;
@@ -81,7 +89,6 @@ h2 {
 label {
     display: block; /* Faz o label ocupar toda a linha */
     margin-bottom: 5px;
-    color: #ffcd7c;
     font-weight: bold;
 }
 
@@ -97,31 +104,13 @@ input {
     transition: border-color 0.3s; /* Transição suave para a borda */
 }
 
-
 /* Quando o input está focado (clicado) */
 input:focus {
     outline: none; /* Remove contorno padrão */
     border-color: #667eea; /* Muda a cor da borda */
 }
 
-/* Botões */
-.login-btn, .signup-btn {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.2s; /* Animação suave */
-}
-
-/* Efeito ao passar o mouse nos botões */
-.login-btn:hover, .signup-btn:hover {
-    transform: translateY(-2px); /* Levanta o botão 2px */
-}
-
+/* Links de cadastro/login */
 .signup-link {
     margin-top: 20px;
     color: #666;
