@@ -1,61 +1,53 @@
-// Importando bibliotecas necessárias
-import express from 'express';
-import cors from 'cors';
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import express from 'express';       // Framework para criar servidor web
+import cors from 'cors';             // Permite requisições de diferentes origens (CORS)
+import sqlite3 from 'sqlite3';       // Driver do SQLite para Node.js
+import { open } from 'sqlite';       // Interface para usar SQLite com async/await
+import path from 'path';             // Para trabalhar com caminhos de arquivos
+import { fileURLToPath } from 'url'; // Para obter caminho real do arquivo com módulos ES
 
-const app = express();
+const app = express(); 
 const PORT = 3000;
 
-// Caminhos __dirname e __filename para localizar arquivos estáticos
+// Caminhos __filename e __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middleware para permitir requisições entre front e back
-app.use(cors());
+// Middleware
+app.use(cors());              // Permite requisições de front-end
+app.use(express.json());      // Interpreta JSON no corpo das requisições
+app.use(express.static(path.join(__dirname, 'public'))); // Servir arquivos estáticos
 
-// Middleware para interpretar JSON no corpo das requisições
-app.use(express.json());
-
-// Middleware para servir arquivos estáticos (HTML, CSS, JS, imagens)
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Rota padrão para abrir o index.html
+// Rota padrão
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Função para abrir o banco de dados SQLite
+// Função para abrir o banco SQLite
 async function abrirBanco() {
   return open({
-    filename: './banco.db',
-    driver: sqlite3.Database
+    filename: './banco.db',   // Arquivo do banco
+    driver: sqlite3.Database  // Driver usado
   });
 }
 
-// Criar tabela "conta" se não existir
+// Cria a tabela "conta" se não existir
+// id: chave primária automática
+// name: nome do usuário
+// email: e-mail único
+// password: senha do usuário
 (async () => {
   const db = await abrirBanco();
-  await db.exec(`
-    CREATE TABLE IF NOT EXISTS conta (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      email TEXT UNIQUE,
-      password TEXT
-    )
-  `);
+  await db.exec('CREATE TABLE IF NOT EXISTS conta (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT UNIQUE, password TEXT)');
 })();
-1
+
 // ROTA DE CADASTRO
 app.post('/api/signup', async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
     const db = await abrirBanco();
-
     const usuarioExistente = await db.get('SELECT * FROM conta WHERE email = ?', [email]);
+
     if (usuarioExistente) {
       return res.status(400).json({ message: 'E-mail já cadastrado!' });
     }
@@ -89,7 +81,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// INICIAR SERVIDOR
+// INICIA O SERVIDOR
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
