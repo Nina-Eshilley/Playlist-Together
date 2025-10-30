@@ -1,0 +1,100 @@
+body {
+  background-color: #141414; /* cor de fundo escura */
+  color: white;              /* cor do texto */
+  font-family: Arial, sans-serif; /* família de fontes */
+  text-align: center;        /* centraliza textos por padrão */
+}
+
+/* Container principal para o bloco de perfis*/
+.profile-container {
+  margin-top: 80px; 
+}
+
+/* Área que contém os perfis*/
+.profiles {
+  display: flex;            
+  justify-content: center;   /* centraliza os itens horizontalmente */
+  flex-wrap: wrap;           /* permite quebra de linha dos itens */
+  gap: 40px;                 /* espaçamento entre perfis */
+  margin-top: 30px;        
+}
+
+/* Cada bolinha de perfil*/
+.profile {
+  width: 140px;             
+  cursor: pointer;           
+  transition: transform 0.3s;
+}
+
+.profile:hover {
+  transform: scale(1.1);     
+}
+
+/* Imagem do perfil*/
+.profile img {
+  width: 140px;            
+  height: 140px;             
+  border-radius: 80px;       
+  object-fit: cover;         /* cobre o espaço sem distorcer a imagem */
+  border: 3px solid transparent; /* borda invisível */
+}
+
+.profile:hover img {
+  border-color: white;       /* borda visível quando passae o mouse*/
+}
+
+/* Área pro botão de adicionar perfil*/
+.add-profile {
+  margin-top: 40px;          
+}
+
+/* Botão de adicionar perfil */
+#addProfileBtn {
+  font-size: 3rem;           
+  background: none;          /* sem fundo */
+  color: gray;               
+  border: 2px dashed gray;   /* borda tracejada*/
+  border-radius: 80px;       
+  width: 100px;             
+  height: 100px;             
+  cursor: pointer;           
+}
+
+/* Modal (sobrecamada) que cobre toda a tela*/
+.modal {
+  position: fixed;           
+  top: 0; left: 0;           
+  width: 100%; height: 100%; /* ocupa toda a largura e altura da tela */
+  background: rgba(0,0,0,0.7); /* fundo semi-transparente*/
+  display: flex;            
+  justify-content: center;   /* centraliza horizontalmente */
+  align-items: center;       /* centraliza verticalmente */
+}
+
+/* Conteúdo interno do modal*/
+.modal-content {
+  background: #222;         
+  padding: 20px;             /* espaço interno */
+  border-radius: 10px;       
+}
+
+/* Classe utilitária para esconder elementos */
+.hidden {
+  display: none;             /* não exibe o elemento */
+}
+
+/* Botão de editar*/
+.edit-btn {
+  margin-top: 6px;          
+  background: none;          /* sem fundo para parecer ícone */
+  border: none;              
+  color: #aaa;             
+  cursor: pointer;           /*interatividade */
+  font-size: 1.2rem;         
+  transition: color 0.3s;    
+}
+
+/* Hover do botão de editar*/
+.edit-btn:hover {
+  color: white;  
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escolha seu perfil</title>
+  <link rel="stylesheet" href="./style/style.css">
+</head>
+<body>
+  <h1>ListenTogether</h1>
+
+  <div class="profile-container">
+    <h1>Quem está ouvindo?</h1>
+    <div id="profiles" class="profiles"></div>
+    <div class="add-profile">
+      <button id="addProfileBtn">+</button>
+      <p>Adicionar perfil</p>
+    </div>
+  </div>
+
+  <!-- Modal de edição -->
+  <div id="editModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Editar perfil</h2>
+      <input type="text" id="profileName" placeholder="Nome do perfil">
+      <input type="file" id="profileImage" accept="image/*">
+      <button id="saveProfileBtn">Salvar</button>
+      <button id="cancelEditBtn">Cancelar</button>
+      <button id="deleteProfileBtn" class="delete-btn hidden">Excluir perfil</button> <!-- Só aparece quando
+      for editar perfil -->
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+</body>
+</html>
