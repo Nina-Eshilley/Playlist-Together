@@ -44,6 +44,7 @@ form.addEventListener('submit', async (e) => {
         if (response.ok) {
             alert('Login realizado com sucesso!');
             localStorage.setItem('token', data.token); // salva token
+            window.location.href = './usuarios_e_home/usuarios.html'; // redireciona para a página de usuários
         } else {
             alert('X ' + data.message); // mostra mensagem de erro do backend
         }
@@ -75,6 +76,7 @@ signupFormulario.addEventListener('submit', async (e) => {
             signupFormulario.reset(); // limpa campos do formulário
             telaCadastro.style.display = 'none'; 
             telaLogin.style.display = 'block';
+            window.location.href = './usuarios_e_home/usuarios.html';
         } else {
             alert('X ' + data.message); // mostra mensagem de erro do backend
         }
