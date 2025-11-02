@@ -1,100 +1,261 @@
 body {
-  background-color: #141414; /* cor de fundo escura */
-  color: white;              /* cor do texto */
-  font-family: Arial, sans-serif; /* família de fontes */
-  text-align: center;        /* centraliza textos por padrão */
+  background-color: #251400;
+  color: white;
+  font-family: "Italiana", sans-serif;
+  text-align: center;
+  height: 100vh;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 35vh;
 }
 
-/* Container principal para o bloco de perfis*/
+/* Faixa clara */
+.faixa-clara {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 54%;
+  background-color: #50391D;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.faixa-clara .faixa-png {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 115%;
+  height: 115%;
+  object-fit: cover;
+  z-index: 2;
+}
+
+/* Container principal */
 .profile-container {
-  margin-top: 80px; 
+  position: relative;
+  z-index: 3;
+  margin-top: 20px;
 }
 
-/* Área que contém os perfis*/
+/* Caixinha “Quem está ouvindo?” */
+.profile-container h1 {
+  display: inline-block;
+  background-color: #50391D;
+  border-radius: 30px;
+  padding: 4px 18px;
+  color: #ffcd7c;
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 25px;
+  box-shadow: 0 0 5px rgba(255, 205, 124, 0.3);
+}
+
+/* Perfis */
 .profiles {
-  display: flex;            
-  justify-content: center;   /* centraliza os itens horizontalmente */
-  flex-wrap: wrap;           /* permite quebra de linha dos itens */
-  gap: 40px;                 /* espaçamento entre perfis */
-  margin-top: 30px;        
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 35px;
+  margin-top: 0;
 }
 
-/* Cada bolinha de perfil*/
 .profile {
-  width: 140px;             
-  cursor: pointer;           
+  width: 130px;
+  cursor: pointer;
   transition: transform 0.3s;
 }
 
 .profile:hover {
-  transform: scale(1.1);     
+  transform: scale(1.1);
 }
 
-/* Imagem do perfil*/
 .profile img {
-  width: 140px;            
-  height: 140px;             
-  border-radius: 80px;       
-  object-fit: cover;         /* cobre o espaço sem distorcer a imagem */
-  border: 3px solid transparent; /* borda invisível */
-}
-
-.profile:hover img {
-  border-color: white;       /* borda visível quando passae o mouse*/
-}
-
-/* Área pro botão de adicionar perfil*/
-.add-profile {
-  margin-top: 40px;          
+  width: 130px;
+  height: 130px;
+  border-radius: 80px;
+  object-fit: cover;
+  border: 3px solid transparent;
 }
 
 /* Botão de adicionar perfil */
+.add-profile {
+  margin-top: 10px;
+}
+
 #addProfileBtn {
-  font-size: 3rem;           
-  background: none;          /* sem fundo */
-  color: gray;               
-  border: 2px dashed gray;   /* borda tracejada*/
-  border-radius: 80px;       
-  width: 100px;             
-  height: 100px;             
-  cursor: pointer;           
+  font-size: 3rem;
+  background: none;
+  color: gray;
+  border: 2px dashed gray;
+  border-radius: 80px;
+  width: 90px;
+  height: 90px;
+  cursor: pointer;
 }
 
-/* Modal (sobrecamada) que cobre toda a tela*/
-.modal {
-  position: fixed;           
-  top: 0; left: 0;           
-  width: 100%; height: 100%; /* ocupa toda a largura e altura da tela */
-  background: rgba(0,0,0,0.7); /* fundo semi-transparente*/
-  display: flex;            
-  justify-content: center;   /* centraliza horizontalmente */
-  align-items: center;       /* centraliza verticalmente */
-}
-
-/* Conteúdo interno do modal*/
-.modal-content {
-  background: #222;         
-  padding: 20px;             /* espaço interno */
-  border-radius: 10px;       
-}
-
-/* Classe utilitária para esconder elementos */
-.hidden {
-  display: none;             /* não exibe o elemento */
-}
-
-/* Botão de editar*/
+/* Botão de edição */
 .edit-btn {
-  margin-top: 6px;          
-  background: none;          /* sem fundo para parecer ícone */
-  border: none;              
-  color: #aaa;             
-  cursor: pointer;           /*interatividade */
-  font-size: 1.2rem;         
-  transition: color 0.3s;    
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-/* Hover do botão de editar*/
-.edit-btn:hover {
-  color: white;  
+.edit-btn img {
+  width: 30px;
+  height: 14px;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.2s;
+  pointer-events: none; /* clique só no botão */
+}
+
+.edit-btn:hover img {
+  transform: scale(1.2);
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: #251400;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Títulos */
+.titulo {
+  color: #ffcd7c;
+  font-size: 40px;
+}
+
+h1, p, a, h2 {
+  color: #ffcd7c;
+}
+
+.edit-btn:hover,
+.edit-btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: none !important;
+}
+
+.edit-btn img:hover,
+.edit-btn img:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Texto digitado */
+#email,
+#signupEmail {
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+/* Placeholder */
+#email::placeholder,
+#signupEmail::placeholder {
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+#modalTitle {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ffcd7c;
+}
+
+/* Inputs */
+#profileName,
+#profileImage {
+  background-color: #663f10;
+  width: 50%;
+  padding: 7px;
+  border-radius: 6px;
+  border: 1px solid #ffcd7c;
+  font-size: 18px;
+  color: #ffcd7c;
+}
+
+/* Placeholder do input */
+#profileName::placeholder {
+  font-family: Arial, sans-serif;
+  color: #ffcd7c;
+}
+
+/* Botões */
+#saveProfileBtn,
+#cancelEditBtn,
+#deleteProfileBtn {
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Diferenciar os botões */
+#saveProfileBtn {
+  background-color: #663f10;
+  color: #ffcd7c;
+  border: 1px solid #ffcd7c;
+}
+
+#cancelEditBtn {
+  background-color: #663f10;
+  color: #ffcd7c;
+  border: 1px solid #ffcd7c;
+}
+
+#deleteProfileBtn {
+  background-color: #663f10;
+  color: #ffcd7c;
+  border: 1px solid #ffcd7c;
+}
+
+/* Botão de excluir inicialmente oculto */
+#deleteProfileBtn.hidden {
+  display: none;
+  border: 1px solid #ffcd7c;
+}
+
+/* Adicionar efeito hover */
+#saveProfileBtn:hover {
+  background-color: #180d01;
+  border: 1px solid #ffcd7c;
+}
+
+#cancelEditBtn:hover {
+  background-color: #180d01;
+  border: 1px solid #ffcd7c;
+}
+
+#deleteProfileBtn:hover {
+  background-color: #180d01;
+  border: 1px solid #ffcd7c;
 }

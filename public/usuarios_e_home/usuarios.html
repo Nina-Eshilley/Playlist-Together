@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Escolha seu perfil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style/style.css">
 </head>
 <body>
-  <h1>ListenTogether</h1>
+  <h1 class="titulo">ListenTogether</h1>
 
   <div class="profile-container">
     <h1>Quem está ouvindo?</h1>
@@ -18,16 +19,20 @@
     </div>
   </div>
 
+  <!-- Faixa clara com PNG decorativo -->
+  <div class="faixa-clara">
+    <img src="./../img/PNG-Música.png" alt="Elemento decorativo" class="faixa-png">
+  </div>
+
   <!-- Modal de edição -->
   <div id="editModal" class="modal hidden">
     <div class="modal-content">
-      <h2>Editar perfil</h2>
+      <h2 id="modalTitle">Novo perfil</h2>
       <input type="text" id="profileName" placeholder="Nome do perfil">
       <input type="file" id="profileImage" accept="image/*">
       <button id="saveProfileBtn">Salvar</button>
       <button id="cancelEditBtn">Cancelar</button>
-      <button id="deleteProfileBtn" class="delete-btn hidden">Excluir perfil</button> <!-- Só aparece quando
-      for editar perfil -->
+      <button id="deleteProfileBtn" class="delete-btn hidden">Excluir perfil</button>
     </div>
   </div>
 

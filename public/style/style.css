@@ -26,12 +26,22 @@ img {
     right: 0;
 }
 
-.título{
-    top: 5%;
-    position: absolute;
-    font-size: 45px;
-    left: 24%;
+/* Cada caixa de login/cadastro serve como referência pro título */
+.caixa-login {
+    position: absolute; 
+
 }
+
+/* Título principal */
+.título {
+    position: relative;    
+    top: 20px;                /* distância do topo da caixa */
+    left: 50%;                /* centraliza horizontalmente */
+    transform: translateX(-50%); /* centralização perfeita */
+    font-size: 45px;          /* mantém o tamanho original */
+    color: #ffcd7c;
+}
+
 
 .container-principal {
     left: 26%;
@@ -128,7 +138,7 @@ input:focus {
     text-decoration: none;
 }
 
-/* ========== ESTILOS DO MODAL ========== */
+/*  ESTILOS DO MODAL */
 
 /* Fundo escuro do modal */
 .modal {

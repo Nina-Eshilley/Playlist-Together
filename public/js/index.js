@@ -1,23 +1,18 @@
 // DOM ELEMENTS
-
-// Seleciona os elementos do DOM para manipulação
-const form = document.getElementById('form');                     // Form login
-const signupFormulario = document.getElementById('signupFormulario'); // Form cadastro
-const mostrarCadastro = document.getElementById('mostrarCadastro');   // Link cadastro
-const voltarLogin = document.getElementById('voltarLogin');           // Link voltar
-const telaLogin = document.getElementById('tela-login');              // Div login
-const telaCadastro = document.getElementById('tela-cadastro');        // Div cadastro
+const form = document.getElementById('form');                     
+const signupFormulario = document.getElementById('signupFormulario'); 
+const mostrarCadastro = document.getElementById('mostrarCadastro');   
+const voltarLogin = document.getElementById('voltarLogin');           
+const telaLogin = document.getElementById('tela-login');              
+const telaCadastro = document.getElementById('tela-cadastro');        
 
 // TROCA DE TELAS
-
-// Mostra a tela de cadastro e esconde a de login
 mostrarCadastro.addEventListener('click', (e) => {
     e.preventDefault();                       
     telaLogin.style.display = 'none';         
     telaCadastro.style.display = 'block';     
 });
 
-// Volta para a tela de login e esconde a de cadastro
 voltarLogin.addEventListener('click', (e) => {
     e.preventDefault();
     telaCadastro.style.display = 'none';      
@@ -25,15 +20,13 @@ voltarLogin.addEventListener('click', (e) => {
 });
 
 // LOGIN
-
 form.addEventListener('submit', async (e) => {
-    e.preventDefault();  // Evita envio padrão do formulário
+    e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     try {
-        // Faz requisição POST para o backend
-        const response = await fetch('/api/login', {   
+        const response = await fetch('http://localhost:3000/api/login', {   
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -43,18 +36,17 @@ form.addEventListener('submit', async (e) => {
 
         if (response.ok) {
             alert('Login realizado com sucesso!');
-            localStorage.setItem('token', data.token); // salva token
-            window.location.href = './usuarios_e_home/usuarios.html'; // redireciona para a página de usuários
+            localStorage.setItem('conta_id', data.conta_id); // Salva conta_id
+            window.location.href = './usuarios_e_home/usuarios.html';
         } else {
-            alert('X ' + data.message); // mostra mensagem de erro do backend
+            alert('X ' + data.message);
         }
     } catch (err) {
-        alert('Erro ao fazer login: ' + err.message); // caso ocorra erro na requisição
+        alert('Erro ao fazer login: ' + err.message);
     }
 });
 
 // CADASTRO
-
 signupFormulario.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('signupName').value;
@@ -62,8 +54,7 @@ signupFormulario.addEventListener('submit', async (e) => {
     const password = document.getElementById('signupPassword').value;
 
     try {
-        // Faz requisição POST para criar nova conta
-        const response = await fetch('/api/signup', {
+        const response = await fetch('http://localhost:3000/api/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password })
@@ -73,12 +64,11 @@ signupFormulario.addEventListener('submit', async (e) => {
 
         if (response.ok) {
             alert('Conta criada!');
-            signupFormulario.reset(); // limpa campos do formulário
-            telaCadastro.style.display = 'none'; 
-            telaLogin.style.display = 'block';
+            localStorage.setItem('conta_id', data.conta_id); // Agora existe
+            signupFormulario.reset();
             window.location.href = './usuarios_e_home/usuarios.html';
         } else {
-            alert('X ' + data.message); // mostra mensagem de erro do backend
+            alert('X ' + data.message);
         }
     } catch (err) {
         alert('Erro ao criar a conta: ' + err.message);
