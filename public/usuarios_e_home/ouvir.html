@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player</title>
+  <link rel="stylesheet" href="./style/style.css">
+</head>
+<body>
+  <div class="player-container text-center">
+    <h1 id="title"></h1>
+    <p id="artist"></p>
+    <iframe id="youtubePlayer" width="80%" height="500" frameborder="0" allowfullscreen></iframe>
+    <br>
+    <button class="voltarBtn" onclick="voltar()">⬅ Voltar</button>
+
+<script>
+function voltar() {
+  // Tenta voltar no histórico do navegador
+  if (document.referrer) {
+    window.history.back();
+  } else {
+    // Se não houver histórico, volta para a home
+    window.location.href = './home.html'; 
+  }
+}
+</script>
+
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const title = params.get("title");
+    const artist = params.get("artist");
+    const videoId = params.get("videoId");
+
+    if (!title || !videoId) {
+      alert("Música inválida!");
+      window.close();
+    } else {
+      document.getElementById("title").textContent = title;
+      document.getElementById("artist").textContent = artist;
+      document.getElementById("youtubePlayer").src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    }
+  </script>
+</body>
+</html>
