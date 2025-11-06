@@ -33,7 +33,7 @@ function renderYouTubeResults(videos) {
       <img src="https://img.youtube.com/vi/${music.videoId}/mqdefault.jpg" alt="${music.title}">
       <h3>${music.title}</h3>
       <p>${music.artist}</p>
-      <button class="playBtn btn btn-warning">▶ Ouvir</button>
+      <button class="playBtn-btn-btn-warning">▶ Ouvir</button>
     `;
 
     card.querySelector(".playBtn").addEventListener("click", () => openPlayer(music));
