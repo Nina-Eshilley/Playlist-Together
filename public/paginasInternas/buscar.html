@@ -5,12 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buscar Músicas - Playlist Together</title>
   <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
         crossorigin="anonymous">
 
   <style>
+    body{
+      background-color: #251400;
+      color: #ffcd7c;
+      font-family: "Italiana", sans-serif;
+      text-align: center;
+    }
     /* Player */
     #youtubePlayer {
       width: 80%;
@@ -36,14 +41,19 @@
       width: 200px;
       text-align: center;
     }
-
     .card img {
       width: 100%;
       border-radius: 6px;
     }
-
-
-
+    #searchBtn{
+      background-color: #ffcd7c;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    .search-bar{
+      margin-top: 20px;
+    }
+    
   </style>
 </head>
 <body>
@@ -51,16 +61,16 @@
   <!-- 🔍 Barra de busca -->
   <div class="search-bar">
     <input id="searchInput" type="text" placeholder="Buscar música..." />
-    <button id="searchBtn">🔍 Buscar</button>
+    <button id="searchBtn"> Buscar </button>
   </div>
-
+<br>
   <!-- Resultados do YouTube -->
   <h2>Resultados do YouTube</h2>
   <div id="youtubeResults" class="list"></div>
-
+  
   <!-- Rodapé -->
   <nav class="navbar navbar-dark" 
-       style="background-color: #77531F; position: fixed; bottom: 0; width: 100%; padding: 10px 0;">
+       style="background-color: #251400; position: fixed; bottom: 0; width: 100%; padding: 10px 0;">
     <ul class="nav justify-content-center w-100">
       <li class="nav-item mx-3">
         <a class="nav-link active" style="color: #ffcd7c;" href="./../usuarios_e_home/home.html">Início</a>

@@ -9,6 +9,15 @@ body {
   overflow-y: auto;
 }
 
+.voltarBtn{
+    background-color: #ffcd7c;
+    font-weight: 700;
+    font-family: "Italiana", sans-serif;
+    font-size: 17px;
+    width: 95px;
+    height: 40px;
+    margin-top: 20px;
+}
 
 /* Faixa clara */
 .faixa-clara {
@@ -260,25 +269,51 @@ h1, p, a, h2 {
   border: 1px solid #ffcd7c;
 }
 
-
-/*Parte de Musicas acessadas*/
-/* Player grande */
+/*Músicas acessadas*/
 #youtubePlayer.grande {
-  width: 80%;
+  width: 40%;
   height: 500px;
   margin: 15px auto;
   display: block;
   border-radius: 12px;
 }
-
-/* Player pequeno */
-#youtubePlayer.pequeno {
-  width: 320px; /* largura menor */
-  height: 180px; /* altura proporcional */
+#maisOuvidas {
+  width: 80%; 
   margin: 10px auto;
-  display: block;
+  display: flex;
+  border-radius: 6px;
+  justify-content: center; /* centraliza os cards na horizontal */
+  align-items: flex-start;
+  align-items: stretch; /* faz os cards terem a mesma altura */
+  gap: 15px;
+}
+#maisOuvidas .card {
+  flex-direction: column; /*organiza verticalmente*/
+  align-items: center;
+  width: 180px;
+  text-align: center;
+  background-color: #50391D;
+  border-radius: 10px;
+  padding: 10px;
+  justify-content: space-between; /* empurra o botão pro fim */
+  min-height: 300px; /* altura mínima pra manter padrão */
+  box-shadow: 0 0 5px rgba(255, 205, 124, 0.3);
+  transition: transform 0.3s ease;
+}
+
+#maisOuvidas .card:hover {
+  transform: scale(1.05);
+}
+
+#maisOuvidas .card img {
+  width: 90%;
+  height: 100px;
+  object-fit: cover;
   border-radius: 6px;
 }
+
+
+
 
 
 
