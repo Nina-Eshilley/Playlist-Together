@@ -1,4 +1,4 @@
-const API_KEY = "AIzaSyCoWxaW6WlUbKuTNHJrIIVsX7mS6332wW0";
+const API_KEY = "AIzaSyCoWxaW6WlUbKuTNHJrIIVsX7mS6332wW0"; //Chave API do YouTube
 const API_BASE = "http://localhost:3000";
 
 const youtubeResults = document.getElementById("youtubeResults");
@@ -36,7 +36,7 @@ function renderYouTubeResults(videos) {
       <h3>${music.title}</h3>
       <p>${music.artist}</p>
       <button class="playBtn">▶ Ouvir</button>
-      <button class="addPlaylistBtn">➕ Adicionar à playlist</button>
+      <button class="addPlaylistBtn">✚ Adicionar à playlist</button>
     `;
 
     card.querySelector(".playBtn").addEventListener("click", () => openPlayer(music));
@@ -56,12 +56,16 @@ function openPlayer(music) {
 
 // ======= Registrar música ouvida =======
 async function registrarOuvida(music) {
+  const perfil = JSON.parse(localStorage.getItem("currentProfile"));
+  if (!perfil) return; // segurança extra
+
   await fetch(`${API_BASE}/maisouvidas`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(music)
+    body: JSON.stringify({ ...music, perfil_id: perfil.perfil_id })
   });
 }
+
 
 // ======= Carregar playlists =======
 async function carregarPlaylists() {

@@ -41,7 +41,7 @@ async function abrirBanco() {
 
   await db.exec(`
     CREATE TABLE IF NOT EXISTS perfil (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      perfil_id INTEGER PRIMARY KEY AUTOINCREMENT,
       conta_id INTEGER NOT NULL,
       nome TEXT NOT NULL,
       imagem TEXT,
@@ -68,14 +68,17 @@ async function abrirBanco() {
   `);
 
   await db.exec(`
-    CREATE TABLE IF NOT EXISTS mais_ouvidas (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT,
-      artist TEXT,
-      videoId TEXT,
-      count INTEGER DEFAULT 0
-    )
-  `);
+CREATE TABLE IF NOT EXISTS mais_ouvidas (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT,
+  artist TEXT,
+  videoId TEXT,
+  count INTEGER DEFAULT 0,
+  perfil_id INTEGER,
+  FOREIGN KEY (perfil_id) REFERENCES perfil(perfil_id)
+)
+`);
+
 
   console.log('✅ Todas as tabelas garantidas.');
 })();
@@ -149,14 +152,14 @@ app.post('/api/perfis', async (req, res) => {
   }
 });
 
-app.put('/api/perfis/:id', async (req, res) => {
-  const { id } = req.params;
+app.put('/api/perfis/:perfil_id', async (req, res) => {
+  const { perfil_id } = req.params;
   const { nome, imagem } = req.body;
   if (!nome) return res.status(400).json({ message: 'Nome é obrigatório para editar.' });
 
   try {
     const db = await abrirBanco();
-    await db.run('UPDATE perfil SET nome = ?, imagem = ? WHERE id = ?', [nome, imagem || 'default.png', id]);
+    await db.run('UPDATE perfil SET nome = ?, imagem = ? WHERE perfil_id = ?', [nome, imagem || 'default.png', perfil_id]);
     res.json({ message: 'Perfil atualizado com sucesso!' });
   } catch (err) {
     console.error(err);
@@ -164,11 +167,11 @@ app.put('/api/perfis/:id', async (req, res) => {
   }
 });
 
-app.delete('/api/perfis/:id', async (req, res) => {
-  const { id } = req.params;
+app.delete('/api/perfis/:perfil_id', async (req, res) => {
+  const { perfil_id } = req.params;
   try {
     const db = await abrirBanco();
-    await db.run('DELETE FROM perfil WHERE id = ?', [id]);
+    await db.run('DELETE FROM perfil WHERE perfil_id = ?', [perfil_id]);
     res.json({ message: 'Perfil excluído com sucesso!' });
   } catch (err) {
     console.error(err);
@@ -211,25 +214,29 @@ app.delete('/playlists/:id/musicas/:musicId', async (req, res) => {
 });
 
 // --- Mais Ouvidas ---
-app.get('/maisouvidas', async (req, res) => {
+app.get('/maisouvidas/:perfil_id', async (req, res) => {
   const db = await abrirBanco();
-  const top = await db.all('SELECT * FROM mais_ouvidas ORDER BY count DESC LIMIT 10');
+  const { perfil_id } = req.params;
+  const top = await db.all('SELECT * FROM mais_ouvidas WHERE perfil_id = ? ORDER BY count DESC LIMIT 10', [perfil_id]);
   res.json(top || []);
 });
 
 app.post('/maisouvidas', async (req, res) => {
-  const { title, artist, videoId } = req.body;
+  const { perfil_id, title, artist, videoId } = req.body;
   const db = await abrirBanco();
 
-  const row = await db.get('SELECT * FROM mais_ouvidas WHERE videoId = ?', [videoId]);
+  if (!perfil_id) return res.status(400).json({ message: "perfil_id é obrigatório." });
+
+  const row = await db.get('SELECT * FROM mais_ouvidas WHERE videoId = ? AND perfil_id = ?', [videoId, perfil_id]);
   if (row) {
-    await db.run('UPDATE mais_ouvidas SET count = count + 1 WHERE videoId = ?', [videoId]);
+    await db.run('UPDATE mais_ouvidas SET count = count + 1 WHERE videoId = ? AND perfil_id = ?', [videoId, perfil_id]);
   } else {
-    await db.run('INSERT INTO mais_ouvidas (title, artist, videoId, count) VALUES (?, ?, ?, 1)', [title, artist, videoId]);
+    await db.run('INSERT INTO mais_ouvidas (perfil_id, title, artist, videoId, count) VALUES (?, ?, ?, ?, 1)', [perfil_id, title, artist, videoId]);
   }
 
   res.sendStatus(200);
 });
+
 
 // --- Debug: apagar tabelas ---
 app.delete('/debug/apagar-tabelas', async (req, res) => {
