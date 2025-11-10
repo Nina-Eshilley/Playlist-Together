@@ -78,6 +78,16 @@ CREATE TABLE IF NOT EXISTS mais_ouvidas (
   FOREIGN KEY (perfil_id) REFERENCES perfil(perfil_id)
 )
 `);
+await db.exec(`
+  CREATE TABLE IF NOT EXISTS favoritos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    perfil_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    artist TEXT,
+    videoId TEXT NOT NULL,
+    FOREIGN KEY (perfil_id) REFERENCES perfil(perfil_id)
+  )
+`);
 
 
   console.log('✅ Todas as tabelas garantidas.');
@@ -236,6 +246,53 @@ app.post('/maisouvidas', async (req, res) => {
 
   res.sendStatus(200);
 });
+
+// --- Favoritos ---
+
+// Buscar favoritos de um perfil
+app.get('/favoritos/:perfil_id', async (req, res) => {
+  const { perfil_id } = req.params;
+  try {
+    const db = await abrirBanco();
+    const favoritos = await db.all('SELECT * FROM favoritos WHERE perfil_id = ?', [perfil_id]);
+    res.json(favoritos);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erro ao buscar favoritos' });
+  }
+});
+
+// Adicionar música aos favoritos
+app.post('/favoritos', async (req, res) => {
+  const { perfil_id, title, artist, videoId } = req.body;
+  if (!perfil_id || !title || !videoId) return res.status(400).json({ message: 'Campos obrigatórios ausentes.' });
+
+  try {
+    const db = await abrirBanco();
+    const existe = await db.get('SELECT * FROM favoritos WHERE perfil_id = ? AND videoId = ?', [perfil_id, videoId]);
+    if (existe) return res.status(400).json({ message: 'Música já favoritada!' });
+
+    await db.run('INSERT INTO favoritos (perfil_id, title, artist, videoId) VALUES (?, ?, ?, ?)', [perfil_id, title, artist, videoId]);
+    res.status(201).json({ message: 'Música adicionada aos favoritos!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erro ao adicionar favorito' });
+  }
+});
+
+// Remover música dos favoritos
+app.delete('/favoritos/:perfil_id/:videoId', async (req, res) => {
+  const { perfil_id, videoId } = req.params;
+  try {
+    const db = await abrirBanco();
+    await db.run('DELETE FROM favoritos WHERE perfil_id = ? AND videoId = ?', [perfil_id, videoId]);
+    res.json({ message: 'Música removida dos favoritos!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erro ao remover favorito' });
+  }
+});
+
 
 
 // --- Debug: apagar tabelas ---

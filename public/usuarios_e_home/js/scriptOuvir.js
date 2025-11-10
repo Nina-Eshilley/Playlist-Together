@@ -1,4 +1,4 @@
-const API_KEY = "AIzaSyCoWxaW6WlUbKuTNHJrIIVsX7mS6332wW0"; //Chave API do YouTube
+const API_KEY = "AIzaSyCoWxaW6WlUbKuTNHJrIIVsX7mS6332wW0";
 const API_BASE = "http://localhost:3000";
 
 const youtubeResults = document.getElementById("youtubeResults");
@@ -7,9 +7,9 @@ const playlistMusicasDiv = document.getElementById("playlistMusicas");
 const playlistTitle = document.getElementById("playlistTitle");
 const maisOuvidasDiv = document.getElementById("maisOuvidas");
 
-// ======= Buscar YouTube =======
+// ======= Buscar no YouTube =======
 async function searchYouTube() {
-  const q = document.getElementById("searchInput").value.trim();
+  const q = document.getElementById("searchInput")?.value.trim();
   if (!q) return;
 
   youtubeResults.innerHTML = "Carregando...";
@@ -22,11 +22,12 @@ async function searchYouTube() {
 
 function renderYouTubeResults(videos) {
   youtubeResults.innerHTML = "";
+
   videos.forEach(v => {
     const music = {
       title: v.snippet.title,
       artist: v.snippet.channelTitle,
-      videoId: v.id.videoId
+      videoId: v.id.videoId,
     };
 
     const card = document.createElement("div");
@@ -37,37 +38,59 @@ function renderYouTubeResults(videos) {
       <p>${music.artist}</p>
       <button class="playBtn">▶ Ouvir</button>
       <button class="addPlaylistBtn">✚ Adicionar à playlist</button>
+      <button class="favBtn">★ Favoritar</button>
     `;
 
     card.querySelector(".playBtn").addEventListener("click", () => openPlayer(music));
     card.querySelector(".addPlaylistBtn").addEventListener("click", () => escolherPlaylist(music));
+    card.querySelector(".favBtn").addEventListener("click", () => adicionarFavorito(music));
 
     youtubeResults.appendChild(card);
   });
 }
 
-// ======= Abrir player =======
+// ======= Favoritos =======
+function adicionarFavorito(music) {
+  const perfil = JSON.parse(localStorage.getItem("currentProfile"));
+  if (!perfil) return alert("Perfil não encontrado!");
+
+  const chave = `favoritos_${perfil.perfil_id}`;
+  const favoritos = JSON.parse(localStorage.getItem(chave)) || [];
+
+  if (favoritos.some(f => f.videoId === music.videoId)) {
+    alert("Essa música já está nos favoritos!");
+    return;
+  }
+
+  favoritos.push(music);
+  localStorage.setItem(chave, JSON.stringify(favoritos));
+  alert("Música adicionada aos favoritos 💛");
+}
+
+// ======= Player =======
 function openPlayer(music) {
-  // Caminho ajustado para a página ouvir.html dentro da mesma pasta usuarios_e_home
   const url = `../usuarios_e_home/ouvir.html?title=${encodeURIComponent(music.title)}&artist=${encodeURIComponent(music.artist)}&videoId=${music.videoId}`;
-  window.location.href = url; // abre na mesma aba
+  window.location.href = url;
   registrarOuvida(music);
 }
 
 // ======= Registrar música ouvida =======
 async function registrarOuvida(music) {
   const perfil = JSON.parse(localStorage.getItem("currentProfile"));
-  if (!perfil) return; // segurança extra
+  if (!perfil) return;
 
-  await fetch(`${API_BASE}/maisouvidas`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...music, perfil_id: perfil.perfil_id })
-  });
+  try {
+    await fetch(`${API_BASE}/maisouvidas`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...music, perfil_id: perfil.perfil_id }),
+    });
+  } catch (err) {
+    console.error("Erro ao registrar música ouvida:", err);
+  }
 }
 
-
-// ======= Carregar playlists =======
+// ======= Playlists =======
 async function carregarPlaylists() {
   const res = await fetch(`${API_BASE}/playlists`);
   const playlists = await res.json();
@@ -92,13 +115,12 @@ async function criarPlaylist() {
   await fetch(`${API_BASE}/playlists`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name })
+    body: JSON.stringify({ name }),
   });
 
   carregarPlaylists();
 }
 
-// ======= Abrir playlist e mostrar músicas =======
 async function abrirPlaylist(id, name) {
   playlistTitle.textContent = name;
   playlistMusicasDiv.innerHTML = "";
@@ -114,7 +136,7 @@ async function abrirPlaylist(id, name) {
       <h3>${m.title}</h3>
       <p>${m.artist}</p>
       <button class="playBtn">▶ Ouvir</button>
-      <button class="removeBtn">❌ Remover</button>
+      <button class="removeBtn">✖ Remover</button>
     `;
 
     div.querySelector(".playBtn").addEventListener("click", () => openPlayer(m));
@@ -127,7 +149,6 @@ async function abrirPlaylist(id, name) {
   });
 }
 
-// ======= Escolher playlist para adicionar música =======
 async function escolherPlaylist(music) {
   const res = await fetch(`${API_BASE}/playlists`);
   const playlists = await res.json();
@@ -145,14 +166,14 @@ async function escolherPlaylist(music) {
   await fetch(`${API_BASE}/playlists/${playlist.id}/musicas`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(music)
+    body: JSON.stringify(music),
   });
 
   alert("Música adicionada à playlist!");
   abrirPlaylist(playlist.id, playlist.name);
 }
 
-// ======= Carregar mais ouvidas =======
+// ======= Mais Ouvidas =======
 async function carregarMaisOuvidas() {
   const res = await fetch(`${API_BASE}/maisouvidas`);
   const top = await res.json();
@@ -174,8 +195,8 @@ async function carregarMaisOuvidas() {
 }
 
 // ======= Inicialização =======
-document.getElementById("searchBtn").addEventListener("click", searchYouTube);
-document.getElementById("addPlaylistBtn").addEventListener("click", criarPlaylist);
+document.getElementById("searchBtn")?.addEventListener("click", searchYouTube);
+document.getElementById("addPlaylistBtn")?.addEventListener("click", criarPlaylist);
 
-carregarPlaylists();
-carregarMaisOuvidas();
+if (playlistsDiv) carregarPlaylists();
+if (maisOuvidasDiv) carregarMaisOuvidas();
