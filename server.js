@@ -223,6 +223,23 @@ app.delete('/playlists/:id/musicas/:musicId', async (req, res) => {
   res.sendStatus(200);
 });
 
+app.delete('/playlists/:id', async (req, res) => {
+  const db = await abrirBanco();
+  
+  try {
+    // Primeiro exclui todas as músicas da playlist
+    await db.run('DELETE FROM playlist_musicas WHERE playlist_id = ?', [req.params.id]);
+    
+    // Depois exclui a playlist
+    await db.run('DELETE FROM playlists WHERE id = ?', [req.params.id]);
+    
+    res.sendStatus(200);
+  } catch (error) {
+    console.error('Erro ao excluir playlist:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 // --- Mais Ouvidas ---
 app.get('/maisouvidas/:perfil_id', async (req, res) => {
   const db = await abrirBanco();
