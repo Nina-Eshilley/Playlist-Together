@@ -8,34 +8,56 @@
   <link rel="stylesheet" href="./style/style.css">
 </head>
 <body>
+
+  <!-- Título do app -->
   <h1 class="titulo">ListenTogether</h1>
 
+  <!-- Caixa onde fica tudo relacionado aos perfis -->
   <div class="profile-container">
+
+    <!-- Subtítulo perguntando quem vai usar -->
     <h1>Quem está ouvindo?</h1>
+
+    <!-- Aqui o JS vai colocar os perfis que já existem -->
     <div id="profiles" class="profiles"></div>
+
+    <!-- Botão para adicionar um novo perfil -->
     <div class="add-profile">
       <button id="addProfileBtn">+</button>
       <p>Adicionar perfil</p>
     </div>
   </div>
 
-  <!-- Faixa clara com PNG decorativo -->
+  <!-- Faixa decorativa com uma imagem -->
   <div class="faixa-clara">
     <img src="./../img/PNG-Música.png" alt="Elemento decorativo" class="faixa-png">
   </div>
 
-  <!-- Modal de edição -->
+  <!-- Modal (janela que aparece em cima para editar ou criar perfil) -->
   <div id="editModal" class="modal hidden">
     <div class="modal-content">
+
+      <!-- Título que muda dependendo se é novo perfil ou editar -->
       <h2 id="modalTitle">Novo perfil</h2>
+
+      <!-- Campo pra digitar o nome do perfil -->
       <input type="text" id="profileName" placeholder="Nome do perfil">
+
+      <!-- Botão pra escolher imagem do perfil -->
       <input type="file" id="profileImage" accept="image/*">
+
+      <!-- Botão pra salvar -->
       <button id="saveProfileBtn">Salvar</button>
+
+      <!-- Botão pra cancelar -->
       <button id="cancelEditBtn">Cancelar</button>
+
+      <!-- Botão de excluir perfil (começa escondido e só aparece quando está editando um existente) -->
       <button id="deleteProfileBtn" class="delete-btn hidden">Excluir perfil</button>
     </div>
   </div>
 
+  <!-- Link do JavaScript que controla tudo dessa tela -->
   <script src="./js/script.js"></script>
 </body>
 </html>

@@ -2,47 +2,47 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Faz com que padding e border não aumentem o tamanho total */
+    box-sizing: border-box; /* Faz com que padding e border façam parte do tamanho total do elemento */
 }
 
-/* Estilos do corpo da página */
+/* Estilos gerais da página */
 body {
-    font-family: "Italiana", sans-serif;
+    font-family: "Italiana", sans-serif; /* Fonte utilizada no texto */
     font-weight: 400;
     font-style: normal;
-    background-color: #251400;
-    background-image: linear-gradient(90deg, #251400 64.5%, rgba(185, 99, 0, 0.411) 0%);
+    background-color: #251400; /* Cor base de fundo */
+    background-image: linear-gradient(90deg, #251400 64.5%, rgba(185, 99, 0, 0.411) 0%); /* Efeito degradê lateral */
     background-repeat: no-repeat;
-    height: 100vh; /* 100% da altura da tela */
-    display: flex;
+    height: 100vh; /* Ajusta o body para ocupar 100% da tela */
+    display: flex; /* Centralização usando flexbox */
     justify-content: center; /* Centraliza horizontalmente */
-    align-items: center;     /* Centraliza verticalmente */
+    align-items: center; /* Centraliza verticalmente */
 }
 
+/* Estiliza imagens gerais da página */
 img {
     display: flex;
     position: absolute;
-    opacity: 0.6;
-    right: 0;
+    opacity: 0.6; /* Transparência */
+    right: 0; /* Coloca a imagem no canto direito */
 }
 
-/* Cada caixa de login/cadastro serve como referência pro título */
+/* Container principal do login/cadastro */
 .caixa-login {
-    position: absolute; 
-
+    position: absolute; /* Deixa a caixa sobreposta ao fundo */
 }
 
 /* Título principal */
 .título {
-    position: relative;    
-    top: 20px;                /* distância do topo da caixa */
-    left: 50%;                /* centraliza horizontalmente */
-    transform: translateX(-50%); /* centralização perfeita */
-    font-size: 45px;          /* mantém o tamanho original */
-    color: #ffcd7c;
+    position: relative;
+    top: 20px; /* Distância do topo */
+    left: 50%; /* Coloca o título no meio */
+    transform: translateX(-50%); /* Ajuste da centralização */
+    font-size: 45px;
+    color: #ffcd7c; /* Cor dourada */
 }
 
-
+/* Container geral do conteúdo */
 .container-principal {
     left: 26%;
     top: 25%;
@@ -51,118 +51,124 @@ img {
     text-align: center;
 }
 
-/* Container do login */
+/* Container do bloco de login */
 .login-container {
     position: relative;
 }
 
-/* Botões simples */
+/* Botões reutilizáveis */
 .btn {
-    background: none;      /* Sem fundo */
-    border: none;          /* Sem borda */
-    color: #ffcd7c;        /* Cor do texto */
+    background: none; /* Remove fundo */
+    border: none; /* Remove borda */
+    color: #ffcd7c; /* Cor dourada do texto */
     font-size: 16px;
-    cursor: pointer;
-    padding: 10px 0;       /* Espaçamento confortável */
-    transition: color 0.3s;
+    cursor: pointer; /* Mãozinha ao passar */
+    padding: 10px 0;
+    transition: color 0.3s; /* Anima a mudança de cor */
 }
 
+/* Efeito hover nos botões */
 .btn:hover {
-    color: #ffd57c;        /* Muda a cor ao passar o mouse */
+    color: #ffd57c; /* Cor mais clara ao passar o mouse */
 }
 
+/* Estilização de labels */
 #form label, #signupFormulario label {
     color: #ffcd7c;
     margin-top: 15px;
 }
 
+/* Links gerais */
 a {
     color: #ffcd7c;
 }
 
+/* Parágrafos */
 p {
     color: #ffcd7c;
 }
 
-/*Título principal*/
+/* Título principal dentro do conteúdo */
 h1 {
     color: #ffcd7c;
     margin-bottom: 30px;
 }
 
-/* Título secundário */
+/* Subtítulo */
 h2 {
     color: #ffcd7c;
     margin-bottom: 30px;
     font-size: 24px;
 }
 
-/* Grupo de inputs (label + input) */
+/* Grupo que envolve label + input */
 .input-group {
     margin-bottom: 20px;
-    text-align: left; /* Alinha o texto à esquerda */
+    text-align: left; /* Alinha itens à esquerda */
 }
 
+/* Deixa label acima do input */
 label {
-    display: block; /* Faz o label ocupar toda a linha */
+    display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-/* Inputs maiores e mais finos */
+/* Estilo dos inputs */
 input {
-    width: 90%; /* diminui um pouco pra centralizar melhor */
-    padding: 10px 14px; /* altura confortável */
-    border: 1.5px solid #ddd; /* borda mais fina */
+    width: 90%; /* Deixa menor para ficar visualmente centralizado */
+    padding: 10px 14px;
+    border: 1.5px solid #ddd;
     border-radius: 6px;
     font-size: 16px;
-    display: block; /* garante que ocupe a linha toda */
-    margin: 0 auto; /* centraliza horizontalmente */
-    transition: border-color 0.3s; /* Transição suave para a borda */
+    display: block; /* Força ocupar linha inteira */
+    margin: 0 auto; /* Centraliza */
+    transition: border-color 0.3s; /* Borda muda suavemente ao focar */
 }
 
-/* Quando o input está focado (clicado) */
+/* Quando o campo está sendo digitado */
 input:focus {
-    outline: none; /* Remove contorno padrão */
-    border-color: #667eea; /* Muda a cor da borda */
+    outline: none; /* Remove contorno azul padrão */
+    border-color: #667eea; /* Cor de borda ao focar */
 }
 
-/* Links de cadastro/login */
+/* Texto abaixo do formulário */
 .signup-link {
     margin-top: 20px;
     color: #666;
 }
 
+/* Links dentro do aviso */
 .signup-link a {
     color: #667eea;
     text-decoration: none;
 }
 
-/*  ESTILOS DO MODAL */
+/*==================== ESTILOS DO MODAL ====================*/
 
-/* Fundo escuro do modal */
+/* Fundo escuro que cobre a tela */
 .modal {
-    display: none; /* Escondido por padrão */
-    position: fixed;
-    z-index: 1; /* Fica acima de outros elementos */
+    display: none; /* Começa escondido */
+    position: fixed; /* Fixado na tela */
+    z-index: 1; /* Fica acima dos outros elementos */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5); /* Fundo semi-transparente */
+    background-color: rgba(0,0,0,0.5); /* Fundo transparente preto */
 }
 
-/* Conteúdo do modal */
+/* Caixa central do modal */
 .modal-content {
     background-color: white;
     margin: 10% auto; /* Centraliza verticalmente */
     padding: 30px;
-    border-radius: 15px;
+    border-radius: 15px; /* Arredonda bordas */
     width: 400px;
     position: relative;
 }
 
-/* Botão de fechar (X) */
+/* Botão ✖ do modal */
 .fechar {
     position: absolute;
     right: 15px;

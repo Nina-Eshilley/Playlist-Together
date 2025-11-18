@@ -1,27 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <!-- Define que isso é HTML moderno -->
   <meta charset="UTF-8">
+
+  <!-- Faz o site funcionar bem no celular -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Player</title>
+
+  <!-- Fonte personalizada -->
   <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+
+  <!-- Seu CSS -->
   <link rel="stylesheet" href="./style/style.css">
 </head>
 <body>
+
+  <!-- Contêiner principal do player -->
   <div class="player-container text-center">
+
+    <!-- Aqui vão aparecer nome da música e do artista -->
     <h1 id="title"></h1>
     <p id="artist"></p>
+
+    <!-- Iframe onde o vídeo do YouTube vai tocar -->
     <iframe id="youtubePlayer" width="80%" height="500" frameborder="0" allowfullscreen></iframe>
     <br>
+
+    <!-- Botão pra voltar pra página anterior ou pra home se não tiver histórico -->
     <button class="voltarBtn" onclick="voltar()">⬅ Voltar</button>
 
 <script>
 function voltar() {
-  // Tenta voltar no histórico do navegador
+  // Verifica se tem página anterior pra voltar
   if (document.referrer) {
-    window.history.back();
+    window.history.back(); // Volta uma página
   } else {
-    // Se não houver histórico, volta para a home
+    // Se não tiver página antes (tipo se o usuário abriu direto), vai pra home
     window.location.href = './home.html'; 
   }
 }
@@ -30,17 +46,24 @@ function voltar() {
   </div>
 
   <script>
+    // Pega os parâmetros da URL (exemplo: ?title=Love&artist=TXT&videoId=abcd123)
     const params = new URLSearchParams(window.location.search);
+
+    // Pega os valores individuais
     const title = params.get("title");
     const artist = params.get("artist");
     const videoId = params.get("videoId");
 
+    // Se faltar algum dado importante, avisa e fecha a página
     if (!title || !videoId) {
       alert("Música inválida!");
       window.close();
     } else {
+      // Coloca o nome da música e artista na tela
       document.getElementById("title").textContent = title;
       document.getElementById("artist").textContent = artist;
+
+      // Coloca o vídeo do YouTube no iframe e já inicia tocando
       document.getElementById("youtubePlayer").src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
     }
   </script>
