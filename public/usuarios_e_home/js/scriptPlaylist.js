@@ -1,33 +1,35 @@
 // scriptPlaylists.js - Script completo para gerenciar playlists e músicas
+ 
+// Chave da API do YouTube (usada futuramente para buscar músicas)
 const API_KEY = "AIzaSyCoWxaW6WlUbKuTNHJrIIVsX7mS6332wW0";
+ 
+// Endereço do servidor onde as playlists estão sendo salvas
 const API_BASE = "http://localhost:3000";
-
-// Elementos da DOM
+ 
+// Variáveis usadas para pegar elementos do HTML depois
 let playlistsDiv, playlistDetail, playlistMusicas, playlistTitle, voltarPlaylistsBtn;
-
+ 
 console.log("Script Playlists carregado!");
-
+ 
+// Espera o HTML carregar antes de executar o script
 document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM carregado - Playlists!");
-    
-    // Inicializar elementos da DOM
-    inicializarElementos();
-    
-    // Inicializar event listeners
-    inicializarEventListeners();
-    
-    // Carregar playlists ao iniciar
-    carregarPlaylists();
+   
+    inicializarElementos(); // pega os elementos da tela
+    inicializarEventListeners(); // adiciona funções nos botões
+    carregarPlaylists(); // carrega playlists do servidor
 });
-
-// ======= INICIALIZAR ELEMENTOS =======
+ 
+ 
+// ======= LOCALIZA OS ELEMENTOS DO HTML =======
 function inicializarElementos() {
-    playlistsDiv = document.getElementById("playlists");
-    playlistDetail = document.getElementById("playlistDetail");
-    playlistMusicas = document.getElementById("playlistMusicas");
-    playlistTitle = document.getElementById("playlistTitle");
-    voltarPlaylistsBtn = document.getElementById("voltarPlaylists");
-    
+    playlistsDiv = document.getElementById("playlists"); // lista de playlists
+    playlistDetail = document.getElementById("playlistDetail"); // tela de músicas da playlist
+    playlistMusicas = document.getElementById("playlistMusicas"); // lista de músicas dentro da playlist
+    playlistTitle = document.getElementById("playlistTitle"); // título da playlist aberta
+    voltarPlaylistsBtn = document.getElementById("voltarPlaylists"); // botão de voltar
+ 
+    // mostra no console se os elementos foram encontrados
     console.log("🔍 Elementos inicializados:", {
         playlistsDiv: !!playlistsDiv,
         playlistDetail: !!playlistDetail,
@@ -36,258 +38,176 @@ function inicializarElementos() {
         voltarPlaylistsBtn: !!voltarPlaylistsBtn
     });
 }
-
-// ======= INICIALIZAR EVENT LISTENERS =======
+ 
+ 
+// ======= ADICIONA FUNÇÕES AOS BOTÕES =======
 function inicializarEventListeners() {
-    // Botão criar playlist
-    const addPlaylistBtn = document.getElementById("addPlaylistBtn");
+    const addPlaylistBtn = document.getElementById("addPlaylistBtn"); // botão de criar playlist
+   
     if (addPlaylistBtn) {
-        addPlaylistBtn.addEventListener("click", criarPlaylist);
-        console.log("Event listener do criar playlist adicionado!");
+        addPlaylistBtn.addEventListener("click", criarPlaylist); // quando clicar → chama criarPlaylist()
     }
-    
-    // Botão voltar para playlists
+   
     if (voltarPlaylistsBtn) {
-        voltarPlaylistsBtn.addEventListener("click", voltarParaPlaylists);
-        console.log("Event listener do voltar adicionado!");
+        voltarPlaylistsBtn.addEventListener("click", voltarParaPlaylists); // botão de voltar
     }
 }
-
-// ======= CRIAR PLAYLIST =======
+ 
+ 
+// ======= CRIA UMA NOVA PLAYLIST =======
 async function criarPlaylist() {
-    console.log("FUNÇÃO CRIAR PLAYLIST CHAMADA!");
-    
-    const name = prompt("Nome da nova playlist:");
-    console.log("Nome digitado:", name);
-    
-    if (!name || name.trim() === "") {
-        console.log("Nome vazio - cancelado");
-        return;
-    }
-
+    const name = prompt("Nome da nova playlist:"); // abre caixa pra digitar nome
+   
+    if (!name || name.trim() === "") return; // impede playlist vazia
+ 
     try {
-        console.log("Enviando requisição para API...");
-        
+        // envia ao servidor a nova playlist
         const response = await fetch(`${API_BASE}/playlists`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name: name.trim() })
         });
-
-        console.log("Resposta recebida:", response.status);
-        
+ 
         if (response.ok) {
-            console.log("Playlist criada com sucesso!");
-            alert(`Playlist "${name}" criada com sucesso!`);
-            await carregarPlaylists();
+            alert(`Playlist "${name}" criada!`);
+            await carregarPlaylists(); // recarrega lista
         } else {
-            console.error("Erro na resposta da API");
-            alert("Erro ao criar playlist. Verifique o servidor.");
+            alert("Erro ao criar playlist.");
         }
-        
+       
     } catch (error) {
-        console.error("Erro na requisição:", error);
         alert("Erro de conexão com o servidor.");
     }
 }
-
-// ======= CARREGAR PLAYSLISTS =======
+ 
+ 
+// ======= BUSCA TODAS AS PLAYLISTS NO SERVIDOR =======
 async function carregarPlaylists() {
-    if (!playlistsDiv) {
-        console.error("Elemento playlists não encontrado!");
-        return;
-    }
-
+    if (!playlistsDiv) return;
+ 
     try {
-        console.log("Carregando playlists...");
-        const res = await fetch(`${API_BASE}/playlists`);
+        const res = await fetch(`${API_BASE}/playlists`); // pega playlists
         const playlists = await res.json();
-
-        playlistsDiv.innerHTML = "";
-        
+ 
+        playlistsDiv.innerHTML = ""; // limpa lista
+ 
         if (playlists.length === 0) {
             playlistsDiv.innerHTML = "<p>Nenhuma playlist criada ainda.</p>";
             return;
         }
-
-        // Para cada playlist, criar um card
+ 
+        // cria um card para cada playlist
         playlists.forEach(pl => {
             const div = document.createElement("div");
             div.className = "playlistCard";
             div.innerHTML = `
                 <h3>${pl.name}</h3>
                 <p><small>ID: ${pl.id}</small></p>
-                <button class="verBtn btn">📂 Ver músicas</button>
+                <button class="verBtn btn">Ver músicas</button>
                 <button class="excluirBtn btn" style="background-color: #ff6b6b;">🗑️ Excluir</button>
             `;
-            
-            // Evento para ver músicas
+           
+            // abre playlist quando clicar
             div.querySelector(".verBtn").addEventListener("click", () => abrirPlaylist(pl.id, pl.name));
-            
-            // Evento para excluir playlist
+           
+            // exclui playlist
             div.querySelector(".excluirBtn").addEventListener("click", () => excluirPlaylist(pl.id));
-            
+           
             playlistsDiv.appendChild(div);
         });
-        
-        console.log(`📁 ${playlists.length} playlists carregadas`);
+ 
     } catch (error) {
-        console.error("Erro ao carregar playlists:", error);
         playlistsDiv.innerHTML = "<p>Erro ao carregar playlists.</p>";
     }
 }
-
-// ======= ABRIR PLAYSLIST (MOSTRAR MÚSICAS) =======
+ 
+ 
+// ======= MOSTRA MÚSICAS DE UMA PLAYLIST =======
 async function abrirPlaylist(id, name) {
-    console.log(`📂 Abrindo playlist: ${name} (ID: ${id})`);
-    
     try {
-        // Mostrar loading
         playlistMusicas.innerHTML = "Carregando músicas...";
-        
-        // Buscar músicas da playlist específica
-        const res = await fetch(`${API_BASE}/playlists/${id}/musicas`);
-        
-        if (!res.ok) {
-            throw new Error(`Erro ${res.status}: ${res.statusText}`);
-        }
-        
+       
+        const res = await fetch(`${API_BASE}/playlists/${id}/musicas`); // pega músicas
         const musicas = await res.json();
-        
-        // Atualizar UI para mostrar a playlist
+       
         mostrarDetalhesPlaylist(name, musicas, id);
-        
+ 
     } catch (error) {
-        console.error("Erro ao carregar músicas:", error);
-        playlistMusicas.innerHTML = `<p>Erro ao carregar músicas: ${error.message}</p>`;
+        playlistMusicas.innerHTML = `<p>Erro ao carregar músicas.</p>`;
     }
 }
-
-// ======= MOSTRAR DETALHES DA PLAYLIST =======
+ 
+ 
+// ======= MUDA TELA PARA VISUALIZAR UMA PLAYLIST =======
 function mostrarDetalhesPlaylist(nomePlaylist, musicas, playlistId) {
-    console.log(`🎵 Mostrando ${musicas.length} músicas da playlist "${nomePlaylist}"`);
-    
-    // 1. Esconder lista de playlists
-    playlistsDiv.style.display = "none";
-    
-    // 2. Mostrar seção de detalhes
-    playlistDetail.style.display = "block";
-    
-    // 3. Atualizar título
-    playlistTitle.textContent = `🎵 ${nomePlaylist} (${musicas.length} músicas)`;
-    
-    // 4. Limpar e preencher lista de músicas
-    playlistMusicas.innerHTML = "";
-    
+    playlistsDiv.style.display = "none"; // esconde lista
+    playlistDetail.style.display = "block"; // mostra músicas
+    playlistTitle.textContent = `🎵 ${nomePlaylist} (${musicas.length} músicas)`; // coloca título
+ 
+    playlistMusicas.innerHTML = ""; // limpa lista
+ 
     if (musicas.length === 0) {
         playlistMusicas.innerHTML = `
             <p>Nenhuma música nesta playlist ainda.</p>
             <button id="adicionarMusicaBtn" class="btn">➕ Adicionar Música</button>
         `;
-        
-        document.getElementById("adicionarMusicaBtn").addEventListener("click", () => {
-            // Futuramente: implementar busca e adição de músicas
-            alert("Em breve: você poderá adicionar músicas aqui!");
-        });
-        
         return;
     }
-    
-    // Para cada música, criar um card
+ 
+    // cria um card para cada música
     musicas.forEach((musica, index) => {
         const musicaDiv = document.createElement("div");
         musicaDiv.className = "musicaCard";
         musicaDiv.innerHTML = `
-            <div style="display: flex; justify-content: between; align-items: center;">
-                <div style="flex: 1;">
-                    <h4>${index + 1}. ${musica.title}</h4>
-                    <p><small>Artista: ${musica.artist}</small></p>
-                    <p><small>ID do Vídeo: ${musica.videoId}</small></p>
-                </div>
-                <div>
-                    <button class="playBtn btn" title="Ouvir">▶️</button>
-                    <button class="removerBtn btn" style="background-color: #ff6b6b;" title="Remover">❌</button>
-                </div>
-            </div>
+            <h4>${index + 1}. ${musica.title}</h4>
+            <button class="playBtn btn">▶️</button>
+            <button class="removerBtn btn" style="background-color: #ff6b6b;">❌</button>
         `;
-        
-        // Evento para tocar música
+       
         musicaDiv.querySelector(".playBtn").addEventListener("click", () => {
-            console.log("🎵 Tocando música:", musica.title);
-            // Aqui você pode implementar o player
-            alert(`Tocando: ${musica.title} - ${musica.artist}`);
+            alert(`Tocando: ${musica.title}`);
         });
-        
-        // Evento para remover música da playlist
-        musicaDiv.querySelector(".removerBtn").addEventListener("click", async () => {
-            if (confirm(`Remover "${musica.title}" da playlist?`)) {
-                await removerMusicaDaPlaylist(playlistId, musica.id || musica.videoId);
-            }
+       
+        musicaDiv.querySelector(".removerBtn").addEventListener("click", () => {
+            removerMusicaDaPlaylist(playlistId, musica.id || musica.videoId);
         });
-        
+       
         playlistMusicas.appendChild(musicaDiv);
     });
 }
-
-// ======= REMOVER MÚSICA DA PLAYLIST =======
+ 
+ 
+// ======= REMOVE UMA MÚSICA =======
 async function removerMusicaDaPlaylist(playlistId, musicaId) {
     try {
-        console.log(`🗑️ Removendo música ${musicaId} da playlist ${playlistId}`);
-        
-        const response = await fetch(`${API_BASE}/playlists/${playlistId}/musicas/${musicaId}`, {
-            method: "DELETE"
-        });
-        
-        if (response.ok) {
-            console.log("Música removida com sucesso!");
-            // Recarregar a playlist atual
-            const playlistName = playlistTitle.textContent.replace("🎵 ", "").split(" (")[0];
-            await abrirPlaylist(playlistId, playlistName);
-        } else {
-            alert("Erro ao remover música.");
-        }
+        await fetch(`${API_BASE}/playlists/${playlistId}/musicas/${musicaId}`, { method: "DELETE" });
+        const playlistName = playlistTitle.textContent.replace("🎵 ", "").split(" (")[0];
+        abrirPlaylist(playlistId, playlistName); // atualiza tela
+ 
     } catch (error) {
-        console.error("Erro ao remover música:", error);
-        alert("Erro de conexão ao remover música.");
+        alert("Erro ao remover música.");
     }
 }
-
-// ======= EXCLUIR PLAYLIST =======
+ 
+ 
+// ======= REMOVE UMA PLAYLIST =======
 async function excluirPlaylist(playlistId) {
-    if (!confirm("Tem certeza que deseja excluir esta playlist? Todas as músicas serão perdidas.")) {
-        return;
-    }
-    
+    if (!confirm("Excluir playlist?")) return;
+ 
     try {
-        console.log(`Excluindo playlist ${playlistId}`);
-        
-        const response = await fetch(`${API_BASE}/playlists/${playlistId}`, {
-            method: "DELETE"
-        });
-        
-        if (response.ok) {
-            console.log("Playlist excluída com sucesso!");
-            alert("Playlist excluída com sucesso!");
-            await carregarPlaylists();
-        } else {
-            alert("Erro ao excluir playlist.");
-        }
+        await fetch(`${API_BASE}/playlists/${playlistId}`, { method: "DELETE" });
+        alert("Playlist excluída!");
+        carregarPlaylists();
+ 
     } catch (error) {
-        console.error("Erro ao excluir playlist:", error);
-        alert("Erro de conexão ao excluir playlist.");
+        alert("Erro ao excluir playlist.");
     }
 }
-
-// ======= VOLTAR PARA LISTA DE PLAYSLISTS =======
+ 
+ 
+// ======= VOLTA PARA TELA INICIAL =======
 function voltarParaPlaylists() {
-    console.log("⬅ Voltando para lista de playlists");
-    
-    // Esconder detalhes
-    playlistDetail.style.display = "none";
-    
-    // Mostrar lista de playlists
-    playlistsDiv.style.display = "block";
-    
-    // Recarregar playlists (caso alguma tenha sido excluída)
-    carregarPlaylists();
+    playlistDetail.style.display = "none"; // esconde músicas
+    playlistsDiv.style.display = "block"; // mostra playlists
+    carregarPlaylists(); // recarrega
 }

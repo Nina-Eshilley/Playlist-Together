@@ -5,3 +5,44 @@ body{
     text-align: center;
 }
 
+#addPlaylistBtn, #adicionarMusicaBtn, #voltarPlaylists, .verBtn{
+    margin-top: 20px;
+    padding: 5px 10px;
+    background-color: #ffcd7c;
+    color: #251400;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.excluirBtn, .verBtn{
+    margin-top: 20px;
+    padding: 5px 10px;
+}
+
+.containerBtns {
+  display: flex;
+  flex-wrap: wrap; /* permite quebrar linha */
+  max-width: 200px; /* só pra não ficar esticado demais */
+}
+
+.playBtn,
+.favBtn,
+.addPlaylistBtn {
+  flex: 1;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Ouvir e Favoritar lado a lado */
+.playBtn,
+.favBtn {
+  flex-basis: calc(50% - 2px); /* divide em 2 colunas */
+}
+
+.addPlaylistBtn {
+  flex-basis: 100%;
+}
+

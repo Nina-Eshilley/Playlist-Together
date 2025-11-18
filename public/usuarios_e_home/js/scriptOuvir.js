@@ -36,10 +36,12 @@ function renderYouTubeResults(videos) {
       <img src="https://img.youtube.com/vi/${music.videoId}/mqdefault.jpg" alt="${music.title}" width="100%">
       <h3>${music.title}</h3>
       <p>${music.artist}</p>
-      <button class="playBtn">▶ Ouvir</button>
-      <button class="addPlaylistBtn">✚ Adicionar à playlist</button>
-      <button class="favBtn">★ Favoritar</button>
-    `;
+      <div class="containerBtns">
+        <button class="playBtn">▶ Ouvir</button>
+        <button class="favBtn">★ Favoritar</button>
+        <button class="addPlaylistBtn">✚ Adicionar à playlist</button>
+      </div>
+      `;
 
     card.querySelector(".playBtn").addEventListener("click", () => openPlayer(music));
     card.querySelector(".addPlaylistBtn").addEventListener("click", () => escolherPlaylist(music));
