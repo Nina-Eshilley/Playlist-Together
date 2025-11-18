@@ -1,65 +1,68 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"> <!-- Codificação de caracteres (acentos) -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsivo -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buscar Músicas - Playlist Together</title>
-
-  <!-- Fonte usada no projeto -->
   <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
-
-  <!-- Bootstrap (estilos prontos) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
         crossorigin="anonymous">
 
-  <!-- CSS inline específico desta página -->
   <style>
-    /* Estilo geral da página */
     body{
-      background-color: #251400; /* cor de fundo */
-      color: #ffcd7c; /* cor dos textos */
-      font-family: "Italiana", sans-serif; /* fonte principal */
-      text-align: center; /* centraliza conteúdo */
+      background-color: #251400;
+      color: #ffcd7c;
+      font-family: "Italiana", sans-serif;
+      text-align: center;
+      min-height: 105vh;
+    }
+    .containerBtns {
+      display: flex;
+      flex-wrap: wrap; /* permite quebrar linha */
+      max-width: 200px; /* só pra não ficar esticado demais */
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
 
-    /* Botão "Ouvir" */
+    /*Botão de ouvir*/
     .playBtn{
-      background-color: #72582f;
-      border-radius: 10px;
-      border: 1px solid #ffcd7c;
-      font-family: 'Times New Roman', Times, serif;
+      background-color: #ffcd7c;
+      border-radius: 6px;
+      font-family: Arial, Helvetica, sans-serif;      
     }
+
     .playBtn:hover{
-      background-color: #ffcd7c;
+      background-color: #fff6e7;
       border: 2px solid #72582f;
     }
 
-    /* Botão "Favoritar" */
+    /*Botão de favoritar*/
     .favBtn{
-      background-color: #72582f;
-      border-radius: 10px;
-      border: 1px solid #ffcd7c;
-      font-family: 'Times New Roman', Times, serif;
+      background-color: #ffcd7c;
+      border-radius: 6px;
+      font-family: Arial, Helvetica, sans-serif;
     }
+
     .favBtn:hover{
-      background-color: #ffcd7c;
+      background-color: #fff6e7;
       border: 2px solid #72582f;
     }
 
-    /* Botão "Adicionar à playlist" */
+    /*Botão de adicionar na playlist*/
     .addPlaylistBtn{
-      background-color: #72582f;
-      border-radius: 10px;
-      border: 1px solid #ffcd7c;
-      font-family: 'Times New Roman', Times, serif;
-    }
-    .addPlaylistBtn:hover{
       background-color: #ffcd7c;
+      border-radius: 6px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .addPlaylistBtn:hover{
+      background-color: #fff6e7;
       border: 2px solid #72582f;
     }
 
-    /* Player embutido do YouTube */
+    /* Player */
     #youtubePlayer {
       width: 80%;
       height: 500px;
@@ -68,7 +71,7 @@
       border-radius: 12px;
     }
 
-    /* Layout de lista (cards) */
+    /* Cards */
     .list {
       display: flex;
       flex-wrap: wrap;
@@ -76,7 +79,6 @@
       justify-content: center;
     }
 
-    /* Aparência dos cards de resultado */
     .card {
       background-color: #3b1f0f;
       color: #ffcd7c;
@@ -89,58 +91,52 @@
       width: 100%;
       border-radius: 6px;
     }
-
-    /* Botão de busca */
     #searchBtn{
       background-color: #ffcd7c;
       border-radius: 10px;
       font-weight: 600;
     }
-
-    /* Espaçamento da barra de busca */
     .search-bar{
       margin-top: 20px;
     }
+    
   </style>
 </head>
 <body>
 
-  <!-- Barra de busca: input + botão -->
+  <!-- 🔍 Barra de busca -->
   <div class="search-bar">
-    <input id="searchInput" type="text" placeholder="Buscar música..." /> <!-- Campo onde o usuário digita -->
-    <button id="searchBtn"> Buscar </button> <!-- Aciona a busca via JS -->
+    <input id="searchInput" type="text" placeholder="Buscar música..." />
+    <button id="searchBtn"> Buscar </button>
   </div>
-  <br>
-
-  <!-- Título da seção de resultados -->
+<br>
+  <!-- Resultados do YouTube -->
   <h2>Resultados do YouTube</h2>
-
-  <!-- Aqui o JS vai colocar os cards resultantes da busca -->
   <div id="youtubeResults" class="list"></div>
   
-  <!-- Rodapé fixo com navegação (menu inferior) -->
+  <!-- Rodapé -->
   <nav class="navbar navbar-dark" 
        style="background-color: #251400; position: fixed; bottom: 0; width: 100%; padding: 10px 0;">
     <ul class="nav justify-content-center w-100">
       <li class="nav-item mx-3">
-        <a class="nav-link active" style="color: #ffcd7c;" href="./../usuarios_e_home/home.html">Início</a> <!-- Link pra home -->
+        <a class="nav-link active" style="color: #ffcd7c;" href="./../usuarios_e_home/home.html">Início</a>
       </li>
       <li class="nav-item mx-3">
-        <a class="nav-link" style="color: #ffcd7c;" href="./buscar.html">Buscar músicas</a> <!-- Link pra essa página -->
+        <a class="nav-link" style="color: #ffcd7c;" href="./buscar.html">Buscar músicas</a>
       </li>
       <li class="nav-item mx-3">
-        <a class="nav-link" style="color: #ffcd7c;" href="./playlists.html">Minhas Playlists</a> <!-- Link pras playlists -->
+        <a class="nav-link" style="color: #ffcd7c;" href="./playlists.html">Minhas Playlists</a>
       </li>
       <li class="nav-item mx-3">
-        <a class="nav-link" style="color: #ffcd7c;" href="./amigos.html">Amigos</a> <!-- Link pra amigos -->
+        <a class="nav-link" style="color: #ffcd7c;" href="./amigos.html">Amigos</a>
       </li>
       <li class="nav-item mx-3">
-        <a class="nav-link" style="color: #ffcd7c;" href="./conta.html">Conta</a> <!-- Link pra conta -->
+        <a class="nav-link" style="color: #ffcd7c;" href="./conta.html">Conta</a>
       </li>
     </ul>
   </nav>
 
-  <!-- Scripts do Bootstrap (jQuery + Popper + Bootstrap JS) -->
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
           integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" 
           crossorigin="anonymous"></script>
@@ -151,7 +147,7 @@
           integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
           crossorigin="anonymous"></script>
 
-  <!-- Seus scripts que fazem a busca, tocar e favoritar (defer garante execução após parsing do HTML) -->
+  <!-- Meus scripts -->
   <script src="./../usuarios_e_home/js/scriptOuvir.js" defer></script>
   <script src="./../usuarios_e_home/js/scriptHome.js" defer></script>
 
