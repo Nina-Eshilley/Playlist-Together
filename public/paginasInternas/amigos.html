@@ -1,65 +1,51 @@
-<!DOCTYPE html> <!-- Diz ao navegador que isso é um documento HTML5 -->
-
-<html lang="en"> <!-- Define o idioma da página como inglês -->
-
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8"> <!-- Suporte para acentos e caracteres especiais -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <!-- Faz o site se ajustar ao tamanho da tela (responsivo) -->
-
-    <title>Document</title> <!-- Título que aparece na aba do navegador -->
-
-    <!-- Importando o CSS do Bootstrap (biblioteca pronta de estilo) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amigos - Playlist Together</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-
-    <!-- Importando uma fonte do Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
-
-    <!-- Arquivo CSS próprio do projeto -->
     <link rel="stylesheet" href="./style/style.css">
+    <style>
+        body {
+            padding-bottom: 60px; /* espaço para não colar no rodapé */
+            background-color: #251400;
+            color: #ffcd7c;
+        }
+        .status {
+            font-weight: bold;
+        }
+    </style>
 </head>
+<body>
 
-<body> <!-- Conteúdo visível da página começa aqui -->
+<h2>Amigos</h2>
+<div id="lista-amigos"></div>
 
-    <!-- Barra de navegação fixa na parte inferior -->
-    <nav class="navbar navbar-dark" 
-        style="background-color: #251400; position: fixed; bottom: 0; width: 100%; padding: 10px 0;">
-        
-        <!-- Lista de links do menu -->
-        <ul class="nav justify-content-center w-100">
-            <li class="nav-item mx-3">
-                <a class="nav-link active" style="color: #ffcd7c;" href="./../usuarios_e_home/home.html">Início</a>
-            </li>
+<!-- Notificação -->
+<div id="notificacao-container"></div>
 
-            <li class="nav-item mx-3">
-                <a class="nav-link" style="color: #ffcd7c;" href="./buscar.html">Buscar músicas</a>
-            </li>
+<!-- Rodapé fixo -->
+<nav class="navbar navbar-dark" style="background-color: #251400; position: fixed; bottom: 0; width: 100%; padding: 10px 0;">
+    <ul class="nav justify-content-center w-100">
+        <li class="nav-item mx-3"><a class="nav-link active" style="color: #ffcd7c;" href="./../usuarios_e_home/home.html">Início</a></li>
+        <li class="nav-item mx-3"><a class="nav-link" style="color: #ffcd7c;" href="./buscar.html">Buscar músicas</a></li>
+        <li class="nav-item mx-3"><a class="nav-link" style="color: #ffcd7c;" href="./playlists.html">Minhas Playlists</a></li>
+        <li class="nav-item mx-3"><a class="nav-link" style="color: #ffcd7c;" href="./amigos.html">Amigos</a></li>
+        <li class="nav-item mx-3"><a class="nav-link" style="color: #ffcd7c;" href="./conta.html">Conta</a></li>
+    </ul>
+</nav>
 
-            <li class="nav-item mx-3">
-                <a class="nav-link" style="color: #ffcd7c;" href="./playlists.html">Minhas Playlists</a>
-            </li>
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
 
-            <li class="nav-item mx-3">
-                <a class="nav-link" style="color: #ffcd7c;" href="./amigos.html">Amigos</a>
-            </li>
-
-            <li class="nav-item mx-3">
-                <a class="nav-link" style="color: #ffcd7c;" href="./conta.html">Conta</a>
-            </li>
-        </ul>
-    </nav>
-
-<!-- Estilo extra pra não deixar o conteúdo ficar escondido atrás da navbar -->
-<style>
-  body {
-    padding-bottom: 60px; /* Dá um espaço para o conteúdo não colar na barra fixa */
-  }
-</style>
-
-<!-- Scripts necessários para o funcionamento do Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> <!-- Biblioteca jQuery -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script> <!-- Necessário pra menus e popups -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script> <!-- JavaScript do Bootstrap -->
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/socket.js" defer></script>
+<script src="../js/amigos.js" defer></script>
 
 </body>
 </html>
