@@ -9,19 +9,98 @@
     <link rel="stylesheet" href="./style/style.css">
     <style>
         body {
-            padding-bottom: 60px; /* espaço para não colar no rodapé */
+            padding-bottom: 60px;
             background-color: #251400;
             color: #ffcd7c;
         }
-        .status {
+        
+        .amigo-card {
+            background: #3a210d;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid #ffcd7c;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .amigo-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 205, 124, 0.3);
+        }
+        
+        .amigo-foto {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffcd7c;
+        }
+        
+        .amigo-info {
+            flex: 1;
+        }
+        
+        .amigo-nome {
+            font-size: 1.3rem;
             font-weight: bold;
+            margin-bottom: 5px;
+            color: #ffcd7c;
+        }
+        
+        .status-online {
+            color: lime;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        .status-offline {
+            color: gray;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        .notificacao {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #3a210d;
+            color: #ffcd7c;
+            padding: 20px;
+            border-radius: 15px;
+            border: 3px solid #ffcd7c;
+            z-index: 1000;
+            max-width: 350px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            color: #ffcd7c;
+            font-family: 'Italiana', serif;
         }
     </style>
 </head>
 <body>
 
-<h2>Amigos</h2>
-<div id="lista-amigos"></div>
+<div class="container">
+    <h2>Seus Amigos</h2>
+    <div id="lista-amigos"></div>
+</div>
 
 <!-- Notificação -->
 <div id="notificacao-container"></div>

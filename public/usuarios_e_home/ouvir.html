@@ -1,60 +1,45 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- Define que isso é HTML moderno -->
   <meta charset="UTF-8">
-
-  <!-- Faz o site funcionar bem no celular -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Player</title>
-
-  <!-- Fonte personalizada -->
   <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
-
-  <!-- Seu CSS -->
   <link rel="stylesheet" href="./style/style.css">
 </head>
 <body>
 
-  <!-- Contêiner principal do player -->
   <div class="player-container text-center">
-
-    <!-- Aqui vão aparecer nome da música e do artista -->
     <h1 id="title"></h1>
     <p id="artist"></p>
 
-    <!-- Iframe onde o vídeo do YouTube vai tocar -->
     <iframe id="youtubePlayer" width="80%" height="500" frameborder="0" allowfullscreen></iframe>
     <br>
 
-    <!-- Botão pra voltar pra página anterior ou pra home se não tiver histórico -->
     <button class="voltarBtn" onclick="voltar()">⬅ Voltar</button>
-
-<script>
-function voltar() {
-  // Verifica se tem página anterior pra voltar
-  if (document.referrer) {
-    window.history.back(); // Volta uma página
-  } else {
-    // Se não tiver página antes (tipo se o usuário abriu direto), vai pra home
-    window.location.href = './home.html'; 
-  }
-}
-</script>
-
   </div>
 
-  <script>
-    // Pega os parâmetros da URL (exemplo: ?title=Love&artist=TXT&videoId=abcd123)
-    const params = new URLSearchParams(window.location.search);
+  <!-- ADICIONE ESTE SCRIPT DO SOCKET.IO -->
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script src="../js/socket.js"></script>
 
-    // Pega os valores individuais
+  <script>
+    // Função para voltar
+    function voltar() {
+      if (document.referrer) {
+        window.history.back();
+      } else {
+        window.location.href = './home.html'; 
+      }
+    }
+
+    // Pega os parâmetros da URL
+    const params = new URLSearchParams(window.location.search);
     const title = params.get("title");
     const artist = params.get("artist");
     const videoId = params.get("videoId");
 
-    // Se faltar algum dado importante, avisa e fecha a página
+    // Verifica se tem dados válidos
     if (!title || !videoId) {
       alert("Música inválida!");
       window.close();
@@ -63,9 +48,94 @@ function voltar() {
       document.getElementById("title").textContent = title;
       document.getElementById("artist").textContent = artist;
 
-      // Coloca o vídeo do YouTube no iframe e já inicia tocando
+      // Coloca o vídeo do YouTube no iframe
       document.getElementById("youtubePlayer").src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+      // 🔔 ENVIA NOTIFICAÇÃO QUANDO O VÍDEO CARREGAR
+      enviarNotificacaoMusicaParaAmigos(title);
+    }
+
+    // Função para enviar notificação aos amigos
+    function enviarNotificacaoMusicaParaAmigos(tituloMusica) {
+      // Pequeno delay para garantir que o socket está carregado
+      setTimeout(() => {
+        if (window.enviarNotificacaoMusica) {
+          window.enviarNotificacaoMusica(tituloMusica, window.location.href);
+          console.log("📢 Notificação enviada para amigos:", tituloMusica);
+        } else {
+          console.log("⚠ Aguardando função de notificação...");
+          // Tenta novamente após 1 segundo
+          setTimeout(() => {
+            if (window.enviarNotificacaoMusica) {
+              window.enviarNotificacaoMusica(tituloMusica, window.location.href);
+              console.log("📢 Notificação enviada (segunda tentativa):", tituloMusica);
+            } else {
+              console.log("❌ Função de notificação não disponível");
+            }
+          }, 1000);
+        }
+      }, 500);
+    }
+
+    // Monitora quando o iframe do YouTube começa a tocar
+    function monitorarPlayerYouTube() {
+      const iframe = document.getElementById('youtubePlayer');
+      
+      // Tenta detectar quando o vídeo inicia (método alternativo)
+      window.addEventListener('blur', function() {
+        // Quando a janela perde foco, pode indicar que o vídeo começou
+        console.log("🔄 Verificando se música está tocando...");
+      });
+      
+      // Também envia notificação quando a página fica visível
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+          console.log("📀 Página visível - música provavelmente tocando");
+        }
+      });
+    }
+
+    // Inicializa o monitoramento quando a página carrega
+    document.addEventListener('DOMContentLoaded', function() {
+      monitorarPlayerYouTube();
+      
+      // Envia notificação também quando o usuário interage com a página
+      document.addEventListener('click', function() {
+        const titulo = document.getElementById('title')?.textContent;
+        if (titulo && titulo !== 'Música Desconhecida') {
+          console.log("🎵 Interação detectada - verificando notificação");
+        }
+      });
+    });
+
+    // 🔄 FUNÇÃO DE TESTE (pode remover depois)
+    function testarNotificacao() {
+      const tituloTeste = document.getElementById('title')?.textContent || "Música de Teste";
+      if (window.enviarNotificacaoMusica) {
+        window.enviarNotificacaoMusica(tituloTeste, window.location.href);
+        alert("✅ Notificação de teste enviada!\nVerifique na página de amigos em outra aba.");
+      } else {
+        alert("❌ Função de notificação não carregada\nVerifique o console (F12)");
+      }
     }
   </script>
+
+  <!-- 🔔 BOTÃO DE TESTE (REMOVA DEPOIS QUE ESTIVER FUNCIONANDO) -->
+  <button onclick="testarNotificacao()" style="
+    position: fixed; 
+    top: 20px; 
+    right: 20px; 
+    z-index: 1000; 
+    background: #ffcd7c; 
+    color: #251400; 
+    border: none; 
+    padding: 10px 15px; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    font-weight: bold;
+  ">
+    🔔 Testar Notificação
+  </button>
+
 </body>
 </html>

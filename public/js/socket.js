@@ -1,50 +1,48 @@
-// Cria o socket apenas se ainda não existir
-window.socket = window.socket || io("http://localhost:3000");
-console.log("socket.js carregou!");
+// Cria socket global apenas uma vez
+if (!window.socket) {
+  window.socket = io("http://localhost:3000");
+  console.log("🔌 Socket criado!");
+}
 
-const socket = window.socket; // referência para uso local
+const socket = window.socket;
 
-console.log("socket.js carregou!");
+// Quando conecta, avisa ao server
+socket.on("connect", () => {
+  console.log("🟢 Conectado ao servidor Socket!");
 
-const perfilAtualSocket = JSON.parse(localStorage.getItem("currentProfile"));
-
-// Envia info quando entra
-socket.emit("perfilOnline", {
-  perfil_id: perfilAtualSocket.perfil_id,
-  nome: perfilAtualSocket.nome
-});
-
-// Atualiza lista de online
-socket.on("onlineList", lista => {
-  document.querySelectorAll(".amigo").forEach(div => {
-    const id = div.getAttribute("data-id");
-    const status = div.querySelector(".status");
-
-    if (lista.includes(parseInt(id))) {
-      status.textContent = "🟢 Online";
-      status.style.color = "#4CAF50";
-    } else {
-      status.textContent = "🔴 Offline";
-      status.style.color = "gray";
-    }
-  });
-});
-
-// Recebe notificação de música
-socket.on("musicNotification", ({ nome, musica, playlistUrl }) => {
-  if (typeof mostrarNotificacao === "function") {
-    mostrarNotificacao(nome, musica, playlistUrl);
+  const perfilAtual = JSON.parse(localStorage.getItem("currentProfile"));
+  if (perfilAtual) {
+    socket.emit("perfilOnline", {
+      perfil_id: perfilAtual.perfil_id,
+      nome: perfilAtual.nome
+    });
   }
 });
 
-// Função para emitir notificação quando a pessoa dá play
+// Receber notificação global
+socket.on("musicNotification", (data) => {
+  console.log("📢 Notificação de música recebida:", data);
+  if (typeof mostrarNotificacao === "function") {
+    mostrarNotificacao(data.nome, data.musica, data.playlistUrl);
+  }
+});
+
+// Função pública para enviar notificação
 function enviarNotificacaoMusica(musica, playlistUrl) {
+  const perfilAtual = JSON.parse(localStorage.getItem("currentProfile"));
+  if (!perfilAtual) {
+    console.error("Perfil não encontrado para enviar notificação");
+    return;
+  }
+
   socket.emit("musicPlaying", {
-    perfil_id: perfilAtualSocket.perfil_id,
-    nome: perfilAtualSocket.nome,
+    perfil_id: perfilAtual.perfil_id,
+    nome: perfilAtual.nome,
     musica,
     playlistUrl
   });
+  
+  console.log("📤 Notificação enviada:", musica);
 }
 
 window.enviarNotificacaoMusica = enviarNotificacaoMusica;

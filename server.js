@@ -98,7 +98,6 @@ await db.exec(`
   )
 `);
  
- 
   console.log('✅ Todas as tabelas garantidas.');
 })();
  
@@ -416,7 +415,6 @@ app.put('/favoritos/:id', async (req, res) => {
     console.log('Body:', req.body);
     console.log('Body type:', typeof req.body);
    
-    // Verifica se o body está vazio
     if (!req.body || Object.keys(req.body).length === 0) {
       return res.status(400).json({
         error: 'Body está vazio ou não é JSON válido',
@@ -426,8 +424,6 @@ app.put('/favoritos/:id', async (req, res) => {
    
     const { id } = req.params;
     const { title, artist, videoId } = req.body;
-   
-    console.log('Campos desestruturados:', { title, artist, videoId });
    
     if (!title || !artist || !videoId) {
       return res.status(400).json({
@@ -441,8 +437,6 @@ app.put('/favoritos/:id', async (req, res) => {
       'UPDATE favoritos SET title = ?, artist = ?, videoId = ? WHERE id = ?',
       [title, artist, videoId, id]
     );
-   
-    console.log('Resultado do banco:', result);
    
     if (result.changes === 0) {
       return res.status(404).json({ error: 'Favorito não encontrado' });
@@ -491,37 +485,52 @@ app.delete('/debug/apagar-tabelas', async (req, res) => {
   res.json({ sucesso: true, message: 'Todas as tabelas foram apagadas!' });
 });
  
-// --- Fallback para index.html (substitui get('*') problemático) ---
+// --- Fallback para index.html ---
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
  
-// Guarda lista de perfis online
+// ================= SOCKETS =================
+
 let onlineUsers = new Map();
 
-// WebSockets
 io.on("connection", (socket) => {
   console.log("🔌 Novo cliente conectado:", socket.id);
 
-  // Quando alguém entra com um perfil
-  socket.on("loginPerfil", (perfilId) => {
-    onlineUsers.set(perfilId, socket.id);
-    io.emit("onlineUsers", Array.from(onlineUsers.keys()));
+  // CORREÇÃO: Mudar para "perfilOnline" para combinar com o client
+  socket.on("perfilOnline", (data) => {
+    onlineUsers.set(data.perfil_id, socket.id);
+    // CORREÇÃO: Emitir a lista atualizada para todos
+    io.emit("onlineList", Array.from(onlineUsers.keys()));
+    console.log(`🟢 ${data.nome} está online`);
   });
 
-  // Notificação de música sendo tocada
+  // CORREÇÃO: Adicionar handler para getOnlineUsers
+  socket.on("getOnlineUsers", () => {
+    socket.emit("onlineList", Array.from(onlineUsers.keys()));
+  });
+
   socket.on("musicPlaying", (data) => {
+    console.log(`🎵 ${data.nome} está ouvindo: ${data.musica}`);
+    // CORREÇÃO: Enviar para todos exceto o remetente
     socket.broadcast.emit("musicNotification", data);
   });
 
-  // Quando o usuário desconecta
   socket.on("disconnect", () => {
-    for (const [perfilId, id] of onlineUsers.entries()) {
-      if (id === socket.id) onlineUsers.delete(perfilId);
+    // CORREÇÃO: Remover usuário desconectado
+    for (const [perfilId, socketId] of onlineUsers.entries()) {
+      if (socketId === socket.id) {
+        onlineUsers.delete(perfilId);
+        console.log(`🔴 Perfil ${perfilId} desconectado`);
+        break;
+      }
     }
-    io.emit("onlineUsers", Array.from(onlineUsers.keys()));
+    // CORREÇÃO: Atualizar lista para todos
+    io.emit("onlineList", Array.from(onlineUsers.keys()));
   });
 });
-
-// ======== Iniciar servidor ========
-server.listen(PORT, () => console.log(`🚀 Servidor rodando em http://localhost:${PORT}`));
+ 
+// ================= INICIAR SERVIDOR =================
+server.listen(PORT, () => {
+  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+});
