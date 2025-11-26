@@ -3,10 +3,6 @@ console.log("amigos.js carregado!");
 const lista = document.getElementById("lista-amigos");
 const notificacaoContainer = document.getElementById("notificacao-container");
 
-// ⚠️ REMOVA ESTA LINHA - o socket já está declarado no socket.js
-// const socket = window.socket; // ❌ REMOVER
-
-// Use o socket diretamente do window
 let perfilAtual;
 
 // Quando conecta, reenviar status online

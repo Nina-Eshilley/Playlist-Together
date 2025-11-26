@@ -1,5 +1,5 @@
 // ======= Config =======
-const API_KEY = "AIzaSyCoWxaW6WlUbKuTNHJrIIVsX7mS6332wW0";
+const API_KEY = "AIzaSyCoWxaW6WlUbKuTNHJrIIVsX7mS6332wW0";//chave YouTube
 const API_BASE = "http://localhost:3000";
 
 const youtubeResults = document.getElementById("youtubeResults");
@@ -122,12 +122,6 @@ async function registrarOuvida(music) {
   }
 }
 
-/* ==========================
-   PLAYLISTS (CORREÇÕES)
-   - Lista apenas playlists do perfil (rota: GET /playlists/:perfil_id)
-   - Cria playlist com perfil_id (POST /playlists)
-   - escolherPlaylist busca playlists do perfil e adiciona música
-   ========================== */
 
 // Carregar playlists do perfil atual
 async function carregarPlaylists() {
@@ -190,7 +184,7 @@ async function escolherPlaylist(music) {
   const perfil = getPerfilOrAlert();
   if (!perfil) return;
 
-  // <<< rota correta: /playlists/:perfil_id >>>
+  // <<< rota  /playlists/:perfil_id >>>
   const res = await fetch(`${API_BASE}/playlists/${perfil.perfil_id}`);
   if (!res.ok) {
     console.error("Erro ao buscar playlists:", res.status, await res.text());
@@ -224,7 +218,7 @@ async function escolherPlaylist(music) {
   abrirPlaylist(playlist.id, playlist.name);
 }
 
-// Abrir playlist e listar músicas (sem alteração necessária)
+// Abrir playlist e listar músicas 
 async function abrirPlaylist(id, name) {
   playlistTitle.textContent = name;
   playlistMusicasDiv.innerHTML = "";
@@ -263,12 +257,12 @@ async function abrirPlaylist(id, name) {
   });
 }
 
-// ======= Mais Ouvidas (ajustei pra usar rota do servidor se quiser filtrar por perfil) =======
+// ======= Mais Ouvidas  =======
 async function carregarMaisOuvidas() {
   const perfil = getPerfilOrAlert();
   if (!perfil) return;
 
-  // seu server usa GET /maisouvidas/:perfil_id — vou chamar assim:
+  // /maisouvidas/:perfil_id
   const res = await fetch(`${API_BASE}/maisouvidas/${perfil.perfil_id}`);
   if (!res.ok) return;
 

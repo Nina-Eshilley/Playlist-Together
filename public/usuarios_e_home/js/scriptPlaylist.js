@@ -37,9 +37,8 @@ function inicializarEventListeners() {
     voltarPlaylistsBtn?.addEventListener("click", voltarParaLista);
 }
 
-// =========================================================
+
 // LISTAR PLAYLISTS
-// =========================================================
 async function carregarPlaylists() {
     playlistsDiv.innerHTML = "<p>Carregando playlists...</p>";
 
@@ -67,9 +66,8 @@ async function carregarPlaylists() {
     });
 }
 
-// =========================================================
+
 // CRIAR PLAYLIST
-// =========================================================
 async function criarPlaylist() {
     const name = prompt("Digite o nome da nova playlist:");
     if (!name) return;
@@ -83,9 +81,8 @@ async function criarPlaylist() {
     carregarPlaylists();
 }
 
-// =========================================================
+
 // ABRIR PLAYLIST
-// =========================================================
 async function abrirPlaylist(id, name) {
     currentPlaylistId = id;
     playlistTitle.textContent = name;
@@ -137,9 +134,7 @@ async function abrirPlaylist(id, name) {
     });
 }
 
-// =========================================================
 // REPRODUZIR MÚSICA
-// =========================================================
 function reproduzir(videoId, title, artist = "") {
     if (!playerIframe) {
         playerIframe = document.createElement("iframe");
@@ -152,9 +147,9 @@ function reproduzir(videoId, title, artist = "") {
     playerIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
 }
 
-// =========================================================
+
 // REMOVER MÚSICA
-// =========================================================
+
 async function removerMusica(musicId) {
     if (!currentPlaylistId) {
         alert("Erro: nenhuma playlist aberta.");
@@ -180,9 +175,9 @@ async function removerMusica(musicId) {
     }
 }
 
-// =========================================================
+
 // RENOMEAR PLAYLIST
-// =========================================================
+
 async function renomearPlaylist(id, oldName) {
     const newName = prompt("Novo nome:", oldName);
     if (!newName) return;
@@ -196,9 +191,7 @@ async function renomearPlaylist(id, oldName) {
     carregarPlaylists();
 }
 
-// =========================================================
 // DELETAR PLAYLIST
-// =========================================================
 async function deletarPlaylist(id) {
     if (!confirm("Tem certeza que deseja excluir esta playlist?")) return;
 
@@ -206,9 +199,8 @@ async function deletarPlaylist(id) {
     carregarPlaylists();
 }
 
-// =========================================================
+
 // VOLTAR
-// =========================================================
 function voltarParaLista() {
     playlistDetail.style.display = "none";
     playlistsDiv.style.display = "block";
