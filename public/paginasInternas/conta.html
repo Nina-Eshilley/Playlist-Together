@@ -1,71 +1,287 @@
-<!DOCTYPE html> <!-- Diz ao navegador que o arquivo é um documento HTML5 -->
-<html lang="en"> <!-- Define o idioma da página como inglês -->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8"> <!-- Permite acentos e caracteres especiais -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Faz o site se ajustar ao tamanho da tela (responsivo) -->
-    <title>Document</title> <!-- Título que aparece na aba do navegador -->
-
-    <!-- Importa os estilos prontos do Bootstrap -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- Importa a fonte "Italiana" do Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
-
-    <!-- Importa seu arquivo de estilos personalizados -->
     <link rel="stylesheet" href="./style/style.css">
 </head>
-
+ 
 <body>
+    <!-- CONTAINER PRINCIPAL PARA CENTRALIZAR -->
+    <div class="container-main">
+        <div class="conta-section">
+            <h3>Conta</h3>
+            <div class="card">
+                <button class="card-header" type="button">
+                    Editar conta
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="card-content">
+                    <form id="editarContaForm">
+                        <div>
+                            <label for="nome">NOME</label>
+                            <input name="nome" type="text" id="nome" required>
+                        </div>
+                        <div>  
+                            <label for="telefone">Telefone</label>
+                            <input type="text" name="telefone" id="telefone" required>
+                        </div>
+                        <button type="submit">Enviar</button>
+                    </form>
+                    <div id="editarContaMessage" class="message"></div>
+                </div>
+            </div>
+        </div>
+ 
+        <!-- Seção PRIVACIDADE -->
+        <div class="privacidade-section">
+            <h3>Privacidade e segurança</h3>
+            <div class="card">
+                <button class="card-header" type="button">
+                    Alterar Senha
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="card-content">
+                    <form id="alterarSenhaForm">
+                        <div>
+                            <label for="novaSenha">Nova senha</label>
+                            <input name="novaSenha" type="password" id="novaSenha" required minlength="6">
+                        </div>
+                        <div>  
+                            <label for="confirmarSenha">Confirmar senha</label>
+                            <input type="password" name="confirmarSenha" id="confirmarSenha" required minlength="6">
+                        </div>
+                        <button type="submit">Alterar</button>
+                    </form>
+                    <div id="alterarSenhaMessage" class="message"></div>
+                </div>
+            </div>
+        </div>
+ 
+        <div class="card">
+            <button class="card-header" type="button">
+                Sair de todos os Dispositivos
+                <span class="arrow">▼</span>
+            </button>
+            <div class="card-content">
+                <form id="logoutAllForm">
+                    <p>Tem certeza que deseja sair de todos os dispositivos?</p>
+                    <button type="submit">Sair</button>
+                </form>
+                <div id="logoutAllMessage" class="message"></div>
+            </div>
+        </div>
+ 
+        <div class="Ajuda">
+            <h3>Ajuda</h3>
+            <div class="card">
+                <button class="card-header" type="button">
+                    Configurar notificações
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="card-content">
+                    <p>Para configurar as notificações assine o plano together pro</p>
+                    <form>
+                        <button type="button" onclick="assinarPro()">Assine já</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+ 
+        <div class="card">
+            <button class="card-header" type="button">
+                Contate nossa equipe
+                <span class="arrow">▼</span>
+            </button>
+            <div class="card-content">
+                <p><a href="https://www.instagram.com/ali_nunes24?igsh=MWZyM2Z4aDNpMGFmNg==" target="_blank" style="color: #ffcd7c; text-decoration: none;">@ali_nunes24</a></p>
+                <p><a href="https://www.instagram.com/le.oliveira.silva?igsh=cjZraXNoM2Q0bjdl" target="_blank" style="color: #ffcd7c; text-decoration: none;">@le.oliveira.silva</a></p>
+                <p><a href="https://www.instagram.com/rhafa.oliver?igsh=MTJxdGF6bzU1YWk5Zg==" target="_blank" style="color: #ffcd7c; text-decoration: none;">@rhafa.oliver</a></p>
+                <p><a href="https://www.instagram.com/nina_eshilley?igsh=MWRjY3I4eDZlY3g4dQ==" target="_blank" style="color: #ffcd7c; text-decoration: none;">@nina_eshilley</a></p>
+            </div>
+        </div>
+    </div>
+ 
+<style>
+    /* CONTAINER PRINCIPAL */
+    .container-main {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .accordion {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+ 
+    .card {
+        border-radius: 8px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+ 
+    .card-header {
+        width: 100%;
+        padding: 12px 15px;
+        background: #50391D;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        transition: background 0.3s;
+        color: white;
+    }
+ 
+    .card-header:hover {
+        background: #6b4f2a;
+    }
+ 
+    .card-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        padding: 0 15px;
+        background: white;
+    }
+ 
+    .card-content.open {
+        max-height: 400px;
+        padding: 15px;
+    }
+
+    .card-content form {
+        margin-top: 10px;
+    }
+
+    .card-content label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .card-content input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .card-content button[type="submit"] {
+        background: #50391D;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .card-content button[type="submit"]:hover {
+        background: #6b4f2a;
+    }
+
+    .message {
+        margin-top: 10px;
+        padding: 8px;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .message.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+ 
+    .arrow {
+        transition: transform 0.3s;
+        color: white;
+    }
+ 
+    .arrow.open {
+        transform: rotate(180deg);
+    }
+ 
+    .card-content p {
+        margin-bottom: 8px;
+    }
     
-    <!-- MENU FIXO NO RODAPÉ DA TELA -->
-    <nav class="navbar navbar-dark" 
-     style="background-color: #251400; position: fixed; bottom: 0; width: 100%; padding: 10px 0;">
+    .card-content a {
+        color: #ffcd7c;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s;
+        font-size: 14px;
+    }
+    
+    .card-content a:hover {
+        color: #ffcd7c;
+        text-decoration: underline;
+    }
 
-    <!-- Lista de páginas do menu -->
+    .conta-section h3,
+    .privacidade-section h3,
+    .Ajuda h3 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #ffcd7c;
+        font-size: 18px;
+    }
+</style>
+
+<!-- MENU FIXO NO RODAPÉ DA TELA -->
+<nav class="navbar navbar-dark" style="background-color: #251400; position: fixed; bottom: 0; width: 100%; padding: 10px 0;">
     <ul class="nav justify-content-center w-100">
-
-      <!-- Cada li é um item do menu -->
-      <li class="nav-item mx-3">
-        <a class="nav-link active" style="color: #ffcd7c;" href="./../usuarios_e_home/home.html">Início</a>
-      </li>
-
-      <li class="nav-item mx-3">
-        <a class="nav-link" style="color: #ffcd7c;" href="./buscar.html">Buscar músicas</a>
-      </li>
-
-      <li class="nav-item mx-3">
-        <a class="nav-link" style="color: #ffcd7c;" href="./playlists.html">Minhas Playlists</a>
-      </li>
-
-      <li class="nav-item mx-3">
-        <a class="nav-link" style="color: #ffcd7c;" href="./amigos.html">Amigos</a>
-      </li>
-
-      <li class="nav-item mx-3">
-        <a class="nav-link" style="color: #ffcd7c;" href="./conta.html">Conta</a>
-      </li>
+        <li class="nav-item mx-3">
+            <a class="nav-link active" style="color: #ffcd7c;" href="./../usuarios_e_home/home.html">Início</a>
+        </li>
+        <li class="nav-item mx-3">
+            <a class="nav-link" style="color: #ffcd7c;" href="./buscar.html">Buscar músicas</a>
+        </li>
+        <li class="nav-item mx-3">
+            <a class="nav-link" style="color: #ffcd7c;" href="./playlists.html">Minhas Playlists</a>
+        </li>
+        <li class="nav-item mx-3">
+            <a class="nav-link" style="color: #ffcd7c;" href="./amigos.html">Amigos</a>
+        </li>
+        <li class="nav-item mx-3">
+            <a class="nav-link" style="color: #ffcd7c;" href="./conta.html">Conta</a>
+        </li>
     </ul>
 </nav>
 
-
-<!-- CSS interno só para garantir que o menu não cubra o conteúdo -->
 <style>
-  body {
-    padding-bottom: 60px; /* Cria um espaço no fim da página para o menu fixo não ficar por cima do conteúdo */
-  }
+    body {
+        padding-bottom: 60px;
+        background-color: #f5f5f5;
+    }
 </style>
 
-
-<!-- SCRIPTS NECESSÁRIOS PARA FUNÇÕES DO BOOTSTRAP -->
-
-<!-- jQuery — usado pelo Bootstrap para algumas funções -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-
-<!-- Popper.js — necessário para tooltips e dropdowns -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-
-<!-- Bootstrap JS — ativa os componentes interativos do Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+<script src="../js/conta.js" defer></script>
+ 
 </body>
 </html>

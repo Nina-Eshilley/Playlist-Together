@@ -471,9 +471,129 @@ app.delete('/favoritos/:perfil_id/:videoId', async (req, res) => {
     res.status(500).json({ message: 'Erro ao remover favorito' });
   }
 });
- 
- 
- 
+
+// ======== ROTAS DA CONTA ========
+
+// Rota para editar informações da conta
+app.put('/api/editar-conta', async (req, res) => {
+    const { conta_id, name, telefone } = req.body;
+
+    try {
+        const db = await abrirBanco();
+        
+        const user = await db.get('SELECT * FROM conta WHERE conta_id = ?', [conta_id]);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'Usuário não encontrado'
+            });
+        }
+
+        // Adiciona coluna telefone se não existir
+        try {
+            const tableInfo = await db.all("PRAGMA table_info(conta)");
+            const hasTelefone = tableInfo.some(col => col.name === 'telefone');
+            
+            if (!hasTelefone) {
+                await db.run('ALTER TABLE conta ADD COLUMN telefone TEXT');
+                console.log('✅ Coluna telefone adicionada à tabela conta');
+            }
+        } catch (alterError) {
+            console.log('Coluna telefone já existe ou erro ao adicionar:', alterError);
+        }
+
+        // Validar telefone
+        const existingPhone = await db.get(
+            'SELECT conta_id FROM conta WHERE telefone = ? AND conta_id != ?',
+            [telefone, conta_id]
+        );
+
+        if (existingPhone) {
+            return res.status(400).json({
+                success: false,
+                message: 'Este telefone já está em uso'
+            });
+        }
+
+        // Atualizar dados
+        await db.run(
+            'UPDATE conta SET name = ?, telefone = ? WHERE conta_id = ?',
+            [name, telefone, conta_id]
+        );
+
+        res.json({
+            success: true,
+            message: 'Dados atualizados com sucesso!'
+        });
+
+    } catch (error) {
+        console.error('Erro ao editar conta:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Erro interno do servidor'
+        });
+    }
+});
+
+// Rota para alterar senha
+app.put('/api/alterar-senha', async (req, res) => {
+    const { conta_id, novaSenha, confirmarSenha } = req.body;
+
+    try {
+        if (novaSenha !== confirmarSenha) {
+            return res.status(400).json({
+                success: false,
+                message: 'As senhas não coincidem'
+            });
+        }
+
+        if (novaSenha.length < 6) {
+            return res.status(400).json({
+                success: false,
+                message: 'A senha deve ter pelo menos 6 caracteres'
+            });
+        }
+
+        const db = await abrirBanco();
+        const user = await db.get('SELECT conta_id FROM conta WHERE conta_id = ?', [conta_id]);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'Usuário não encontrado'
+            });
+        }
+
+        await db.run(
+            'UPDATE conta SET password = ? WHERE conta_id = ?',
+            [novaSenha, conta_id]
+        );
+
+        res.json({
+            success: true,
+            message: 'Senha alterada com sucesso!'
+        });
+
+    } catch (error) {
+        console.error('Erro ao alterar senha:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Erro interno do servidor'
+        });
+    }
+});
+
+// Rota para sair de todos os dispositivos
+app.post('/api/logout-all', async (req, res) => {
+    const { conta_id } = req.body;
+    
+    res.json({
+        success: true,
+        message: 'Logout realizado em todos os dispositivos!'
+    });
+});
+
 // --- Debug: apagar tabelas ---
 app.delete('/debug/apagar-tabelas', async (req, res) => {
   const db = await abrirBanco();
@@ -484,12 +604,12 @@ app.delete('/debug/apagar-tabelas', async (req, res) => {
   await db.exec('DROP TABLE IF EXISTS mais_ouvidas');
   res.json({ sucesso: true, message: 'Todas as tabelas foram apagadas!' });
 });
- 
-// --- Fallback para index.html ---
+
+// --- Fallback para index.html ---  ⬅ ESTE DEVE SER O ÚLTIMO!
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
- 
+
 // ================= SOCKETS =================
 
 let onlineUsers = new Map();
@@ -529,6 +649,7 @@ io.on("connection", (socket) => {
     io.emit("onlineList", Array.from(onlineUsers.keys()));
   });
 });
+
  
 // ================= INICIAR SERVIDOR =================
 server.listen(PORT, () => {
